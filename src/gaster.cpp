@@ -1,6 +1,6 @@
 #include "gaster.h"
 
-Gaster::Gaster(Player *player_instance, sf::RenderWindow *window_instance) : text_position(0), text_tick(0), text_duration_tick(0)
+Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0)
 {
 	FileManager::LoadFromFile(this->gaster_texture, "bin/sprites/gaster.png");
 	FileManager::LoadFromFile(this->gaster_surprised_texture, "bin/sprites/gaster_2.png");
@@ -20,7 +20,7 @@ Gaster::Gaster(Player *player_instance, sf::RenderWindow *window_instance) : tex
 	if (!FileManager::IsAnyFileMissing())
 	{
 		this->player_instance = player_instance;
-		this->window_instance = window_instance;
+		// this->window_instance = window_instance;
 		this->speech_bubble_sprite.setTexture(this->speech_bubble_texture);
 		this->speech_bubble_sprite.setPosition(58.f, 30.f);
 		this->gaster_sprite.setTexture(this->gaster_texture);
@@ -65,11 +65,15 @@ void Gaster::Update()
 			this->dialog.setString(this->dialog.getString() + this->dialog_text[this->text_position]);
 			this->text_position++;
 		}
-		this->window_instance->draw(this->speech_bubble_sprite);
-		this->window_instance->draw(this->dialog);
+		// this->window_instance->draw(this->speech_bubble_sprite);
+		// this->window_instance->draw(this->dialog);
+
+		this->fire(PROP_ID::SPRITE, this->speech_bubble_sprite);
+		this->fire(PROP_ID::TEXT, this->dialog);
 	}
 
-	this->window_instance->draw(this->gaster_sprite);
+	// this->window_instance->draw(this->gaster_sprite);
+	this->fire(PROP_ID::SPRITE, this->gaster_sprite);
 
 	if (!this->blasters.empty())
 	{
@@ -77,7 +81,8 @@ void Gaster::Update()
 		{
 			if (it->spawn_interval < current_tick)
 			{
-				this->window_instance->draw(it->blaster_sprite);
+				// this->window_instance->draw(it->blaster_sprite);
+				this->fire(PROP_ID::SPRITE, it->blaster_sprite);
 
 				if (!it->state_firing)
 				{
@@ -153,7 +158,9 @@ void Gaster::Update()
 						}
 					}
 
-					this->window_instance->draw(it->laser_sprite);
+					// this->window_instance->draw(it->laser_sprite);
+					this->fire(PROP_ID::SPRITE, it->laser_sprite);
+					
 
 					if (current_tick < it->fire_tick)
 					{

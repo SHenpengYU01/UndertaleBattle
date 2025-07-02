@@ -5,6 +5,9 @@
 #include "file_manager.h"
 #include "player.h"
 
+#include "common/frame.h"
+#include "common/property_id.h"
+
 
 class Player;
 
@@ -22,7 +25,7 @@ enum Blaster_Type
 	Orange_Blaster
 };
 
-class Gaster
+class Gaster: public PropertyTrigger
 {
 	private:
 		sf::Font dialog_font;
@@ -62,16 +65,18 @@ class Gaster
 		std::deque<Blaster> blasters;
 
 		Player *player_instance;
-		sf::RenderWindow *window_instance;
+		// sf::RenderWindow *window_instance;
 
 	public:
-		explicit Gaster(Player *player_instance, sf::RenderWindow *window_instance);
+		explicit Gaster(Player *player_instance);
 
 		void SetText(const std::string &text, const DWORD text_duration);
 		void ToggleGasterSurprised(const bool toggle);
 		void Update();
 		void AddBlaster(const sf::Vector2f &position, const char blaster_direction, const DWORD spawn_interval = 0, const char blaster_type = Blaster_Type::Default_Blaster, const DWORD fire_duration = 1000, const DWORD interval_before_firing = 750);
 		void Reset();
+
+
 };
 
 #endif 
