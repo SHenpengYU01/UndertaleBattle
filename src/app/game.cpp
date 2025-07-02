@@ -6,7 +6,7 @@ Game::Game() : window(sf::VideoMode(642, 481), "Gaster Fight", sf::Style::Titleb
 	// this->window.setIcon(20, 19, this->gamefile->GetGameIcon().getPixelsPtr());
 	
 	this->gamefile = new GameFile();
-	this->board = new Board(&this->window);
+	this->board = new Board();
 	this->player = new Player(this->board);
 	this->gaster = new Gaster(this->player, &this->window);
 
@@ -16,6 +16,9 @@ Game::Game() : window(sf::VideoMode(642, 481), "Gaster Fight", sf::Style::Titleb
 		this->player->AddNotification( this->window.GetNotification(i) );
 	}
 
+	for(int i=0; i < PROP_ID::PROP_ID_NUM; i++){
+		this->board->AddNotification( this->window.GetNotification(i) );
+	}
 }
 
 void Game::Update()

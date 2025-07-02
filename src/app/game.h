@@ -1,7 +1,7 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "main.h"
+#include "../main.h"
 #include "../gamefile.h"
 #include "../board.h"
 #include "../player.h"

@@ -31,6 +31,15 @@ PropertyNotification MainWindow::GetNotification(int nf_id){
                 }
             };
             break;
+        case PROP_ID::RECTANGLE_SHAPE:
+            return [this](const std::any& any_rect)->void{
+                try {
+                    const sf::RectangleShape& rs = std::any_cast<const sf::RectangleShape&>(any_rect);
+                    this->draw(rs);
+                } catch(...){
+                    std::cerr << "Bad cast sf::Text " << std::endl;
+                }
+            };
     }
 }
 

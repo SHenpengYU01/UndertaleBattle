@@ -1,6 +1,6 @@
 #include "board.h"
 
-Board::Board(sf::RenderWindow *window_instance) : board_width(165.f), board_text_position(0), board_text_tick(0)
+Board::Board() : board_width(165.f), board_text_position(0), board_text_tick(0)
 {
 	FileManager::LoadFromFile(this->fight_button_texture, "bin/sprites/fightbt.png");
 	FileManager::LoadFromFile(this->fight_button_hover_texture, "bin/sprites/fightbt_hover.png");
@@ -16,7 +16,7 @@ Board::Board(sf::RenderWindow *window_instance) : board_width(165.f), board_text
 
 	if (!FileManager::IsAnyFileMissing())
 	{
-		this->window_instance = window_instance;
+		// this->window_instance = window_instance;
 		this->hp_sprite.setTexture(this->hp_texture);
 		this->hp_sprite.setPosition(sf::Vector2f(226.f, 404.f));
 		this->board_rectangle.setPosition(sf::Vector2f(325.f, 302.f));
@@ -130,12 +130,21 @@ void Board::Update()
 {
 	const DWORD current_tick = GetTickCount();
 
-	this->window_instance->draw(this->board_rectangle);
-	this->window_instance->draw(this->hp_sprite);
-	this->window_instance->draw(this->fight_button_sprite);
-	this->window_instance->draw(this->act_button_sprite);
-	this->window_instance->draw(this->item_button_sprite);
-	this->window_instance->draw(this->mercy_button_sprite);
+	// this->window_instance->draw(this->board_rectangle);
+	// this->window_instance->draw(this->hp_sprite);
+	// this->window_instance->draw(this->fight_button_sprite);
+	// this->window_instance->draw(this->act_button_sprite);
+	// this->window_instance->draw(this->item_button_sprite);
+	// this->window_instance->draw(this->mercy_button_sprite);
+
+	this->fire(PROP_ID::RECTANGLE_SHAPE, this->board_rectangle);
+	this->fire(PROP_ID::SPRITE, this->hp_sprite);
+	this->fire(PROP_ID::SPRITE, this->fight_button_sprite);
+	this->fire(PROP_ID::SPRITE, this->act_button_sprite);
+	this->fire(PROP_ID::SPRITE, this->item_button_sprite);
+	this->fire(PROP_ID::SPRITE, this->mercy_button_sprite);
+
+	
 
 	if (this->show_board_text)
 	{
@@ -147,11 +156,13 @@ void Board::Update()
 			this->text_update_sound.play();
 		}
 
-		this->window_instance->draw(this->board_text);
+		// this->window_instance->draw(this->board_text);
+		this->fire(PROP_ID::TEXT, this->board_text);
 	}
 
 	if (this->show_board_options_text)
 	{
-		this->window_instance->draw(this->board_options_text);
+		// this->window_instance->draw(this->board_options_text);
+		this->fire(PROP_ID::TEXT, this->board_options_text);
 	}
 }

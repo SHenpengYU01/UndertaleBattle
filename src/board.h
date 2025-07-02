@@ -3,6 +3,9 @@
 
 #include "main.h"
 #include "file_manager.h"
+#include "common/frame.h"
+#include "common/property_id.h"
+
 enum Button_Type
 {
 	Fight_Button,
@@ -12,7 +15,7 @@ enum Button_Type
 	None
 };
 
-class Board
+class Board : public PropertyTrigger
 {
 	private:
 		sf::Texture fight_button_texture;
@@ -30,7 +33,7 @@ class Board
 		sf::Texture hp_texture;
 		sf::Sprite hp_sprite;
 		sf::RectangleShape board_rectangle;
-		sf::RenderWindow *window_instance;
+		// sf::RenderWindow *window_instance;
 		sf::Font board_text_font;
 		sf::Text board_text;
 		sf::Text board_options_text;
@@ -44,7 +47,7 @@ class Board
 		float board_width;
 	
 	public:
-		explicit Board(sf::RenderWindow *window_instance);
+		explicit Board();
 
 		sf::FloatRect GetButtonGlobalBounds(const char button_type) const;
 
@@ -98,6 +101,15 @@ class Board
 		void SetBoardText(const std::string &text, const DWORD delay = 0);
 		void HoverButton(const char button_type);
 		void Update();
+
+		std::function<void(int)> GetNextCommand(){
+			return [this](int cmd_id)->void
+			{
+				this->NextStep(cmd_id);
+			};
+		}
+
+		void NextStep(int cmd_id);
 };
 
 #endif

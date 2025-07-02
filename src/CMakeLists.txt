@@ -19,7 +19,7 @@
 # 设置源文件列表
 set(SOURCES
     view/mainwindow.cpp
-    game/game.cpp
+    app/game.cpp
     common/frame.cpp
     main.cpp
     file_manager.cpp
