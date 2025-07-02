@@ -1,4 +1,6 @@
 #include "main.h"
+#include "file_manager.h"
+#include "game.h"
 
 int main()
 {

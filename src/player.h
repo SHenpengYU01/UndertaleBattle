@@ -2,6 +2,7 @@
 #define _PLAYER_H_
 
 #include "main.h"
+#include "board.h"
 
 class Board;
 

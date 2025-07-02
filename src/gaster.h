@@ -2,6 +2,9 @@
 #define _GASTER_H_
 
 #include "main.h"
+#include "file_manager.h"
+#include "player.h"
+
 
 class Player;
 

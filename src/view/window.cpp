@@ -1,5 +1,7 @@
 #include "window.h"
-#include "property_id.h"
+#include "../common/property_id.h"
+#include "../common/frame.h"
+
 
 MainWindow::MainWindow(){
     this->setFramerateLimit(60);
@@ -28,7 +30,9 @@ void MainWindow::HandleInput(){
         this->m_next_command(CMD_ID::LEFT);
     }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
         this->m_next_command(CMD_ID::RIGHT);
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+    }
+    
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
         this->m_next_command(CMD_ID::UP);
     }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
         this->m_next_command(CMD_ID::DOWN);

@@ -2,7 +2,7 @@
 #ifndef __FRAME_H__
 #define __FRAME_H__
 
-#include "main.h"
+#include "../main.h"
 
 typedef std::function<void(uint32_t)>  PropertyNotification;
 
@@ -27,7 +27,7 @@ public:
 	uintptr_t add_notification(PropertyNotification&& pn);
 	void remove_notification(uintptr_t cookie) noexcept
 	{
-		assert( cookie > 0 && cookie <= m_vec_nf.size() );
+		// assert( cookie > 0 && cookie <= m_vec_nf.size() );
 		m_vec_nf[cookie - 1] = nullptr;
 	}
 

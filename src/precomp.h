@@ -10,6 +10,8 @@
 #include <cstdint>
 #include <chrono>
 
+#include <functional>
+
 // #ifdef _WIN32
 //     #include <Windows.h>
 // #else

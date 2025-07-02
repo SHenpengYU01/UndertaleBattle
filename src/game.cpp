@@ -1,5 +1,4 @@
 #include "game.h"
-#include "gamefile.h"
 
 Game::Game() : window(sf::VideoMode(642, 481), "Gaster Fight", sf::Style::Titlebar | sf::Style::Close), current_turn(0), turn_tick(0)
 {
