@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player(sf::RenderWindow *window_instance, Board *board_instance) : health(100), damage_tick(0), use_button_tick(0)
+Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_tick(0)
 {
 	FileManager::LoadFromFile(this->player_texture, "bin/sprites/heart.png");
 	FileManager::LoadFromFile(this->player_dead_texture, "bin/sprites/heart-broken.png");
@@ -17,7 +17,6 @@ Player::Player(sf::RenderWindow *window_instance, Board *board_instance) : healt
 
 	if (!FileManager::IsAnyFileMissing())
 	{
-		this->window_instance = window_instance;
 		this->board_instance = board_instance;
 		this->button_hovered = Button_Type::Fight_Button;
 		this->button_pressed = Button_Type::None;
@@ -129,270 +128,368 @@ void Player::TakeDamage(const int amount)
 	}
 }
 
-void Player::Update()
-{
-	const sf::Vector2f pos = this->player_sprite.getPosition();
-	const DWORD current_tick = GetTickCount();
-	static DWORD flash_tick = 0, button_hover_move_tick = 0;
-	this->is_moving = false;
-	
-	if (this->health > 0)
+void Player::DamagedUpdate(){
+	static DWORD flash_tick = 0;
+	DWORD current_tick = GetTickCount();
+	if (this->damage_tick > current_tick && current_tick > flash_tick)
 	{
-		// if (this->damage_tick > current_tick)
-		// {
-		// 	if (current_tick > flash_tick)
-		// 	{
-		// 		flash_tick = current_tick + 200;
+		flash_tick = current_tick + 200;
 
-		// 		if (this->flash_damage_color == false)
-		// 		{
-		// 			this->flash_damage_color = true;
-		// 			this->player_sprite.setColor(sf::Color(150, 0, 0));
-		// 		}
-		// 		else
-		// 		{
-		// 			this->flash_damage_color = false;
-		// 			this->player_sprite.setColor(sf::Color(255, 0, 0));
-		// 		}
-		// 	}
-		// }
-
-		const sf::FloatRect dimensions = this->board_instance->GetBoardGlobalBounds();
-
-		if (!this->player_turn)
+		if (this->flash_damage_color == false)
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				if ((pos.x - 3.f) > dimensions.left + 5.5f)
-				{
-					this->player_sprite.move(-3.f, 0.f);
-					this->is_moving = true;
-				}
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				if ((pos.x + 3.f) < (dimensions.left + dimensions.width) - 20.5f)
-				{
-					this->player_sprite.move(3.f, 0.f);
-					this->is_moving = true;
-				}
-			}
+			this->flash_damage_color = true;
+			this->player_sprite.setColor(sf::Color(150, 0, 0));
+		}else
+		{
+			this->flash_damage_color = false;
+			this->player_sprite.setColor(sf::Color(255, 0, 0));
+		}
+	}
+}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				if ((pos.y - 3.f) > dimensions.top + 5.5f)
-				{
-					this->player_sprite.move(0.f, -3.f);
-					this->is_moving = true;
-				}
+void Player::HoverButtonUpdate(int direction){
+	static DWORD button_hover_move_tick = 0;
+	DWORD current_tick = GetTickCount();
+
+	if (current_tick > button_hover_move_tick)
+	{
+		if (direction == CMD_ID::LEFT)
+		{
+			if (this->button_hovered == Button_Type::Fight_Button){
+				this->button_hovered = Button_Type::Mercy_Button;
+			}else{
+				this->button_hovered--;
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				if ((pos.y + 3.f) < (dimensions.top + dimensions.height) - 20.5f)
-				{
-					this->player_sprite.move(0.f, 3.f);
-					this->is_moving = true;
-				}
+			this->HoverButton(this->button_hovered);
+			button_hover_move_tick = current_tick + 250;
+		}
+
+		else if (direction == CMD_ID::RIGHT)
+		{
+			if (this->button_hovered == Button_Type::Mercy_Button){
+				this->button_hovered = Button_Type::Fight_Button;
+			}else{
+				this->button_hovered++;
 			}
-			
+			this->HoverButton(this->button_hovered);
+			button_hover_move_tick = current_tick + 250;
+		}
+	}
+
+}
+
+
+void Player::PressFight(){
+	const DWORD current_tick = GetTickCount();
+	this->button_pressed = Button_Type::Fight_Button;
+	this->TogglePlayerTurn(false);
+	this->player_attack.play();
+	this->use_button_tick = current_tick + 2000;
+
+}
+
+void Player::PressAct(){
+	const DWORD current_tick = GetTickCount();
+	this->button_pressed = Button_Type::Act_Button;
+	this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
+	this->board_instance->SetBoardOptionsText("* Check");
+	this->board_instance->ShowBoardOptionsText(true);
+	this->board_instance->ShowBoardText(false);
+	this->use_button_tick = current_tick + 200;
+
+}
+
+void Player::PressItem(){
+	const DWORD current_tick = GetTickCount();
+	if (this->heal_items_available)
+	{
+		this->button_pressed = Button_Type::Item_Button;
+		this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
+		this->board_instance->SetBoardOptionsText("* Pie");
+		this->board_instance->ShowBoardOptionsText(true);
+		this->board_instance->ShowBoardText(false);
+		this->use_button_tick = current_tick + 200;
+	}
+}
+
+
+void Player::PressButton(){
+	const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
+	if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Fight_Button)))
+	{
+		this->PressFight();
+	}
+	else if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Act_Button)))
+	{
+		this->PressAct();
+	}
+	else if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Item_Button)))
+	{
+		this->PressItem();
+	}
+	else if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Mercy_Button)))
+	{
+		this->PressMercy();
+	}
+}
+
+void Player::PressMercy(){
+	const DWORD current_tick = GetTickCount();
+	const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
+	if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Mercy_Button)))
+	{
+		this->button_pressed = Button_Type::Mercy_Button;
+		this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
+		this->board_instance->SetBoardOptionsText("* Skip Turn");
+		this->board_instance->ShowBoardOptionsText(true);
+		this->board_instance->ShowBoardText(false);
+		this->use_button_tick = current_tick + 200;
+	}
+}
+
+
+void Player::DoAct(){
+	const DWORD current_tick = GetTickCount();
+	if (this->use_button_tick < current_tick){
+		if (!this->board_instance->IsBoardTextShown())
+		{
+			this->board_instance->ShowBoardOptionsText(false);
+			this->board_instance->ShowBoardText(true);
+			this->board_instance->SetBoardText("* W.D GASTER - ATK ??? DEF ???\n* Like nothing you've seen before.");
+			this->HoverButton(this->button_hovered);
+			this->use_button_tick = current_tick + 800;
+		}
+		else{
+			this->TogglePlayerTurn(false);
+			this->use_button_tick = current_tick + 1500;
+		}
+	}
+}
+
+void Player::CancelButtonPressed(){
+	if (!this->board_instance->IsBoardTextShown())
+	{
+		this->board_instance->ShowBoardOptionsText(false);
+		this->board_instance->ShowBoardText(true);
+		this->button_pressed = Button_Type::None;
+		this->HoverButton(this->button_hovered);
+	}
+}
+
+
+void Player::DoItem(){
+	const DWORD current_tick = GetTickCount();
+	if (this->use_button_tick < current_tick)
+	{
+		if (!this->board_instance->IsBoardTextShown())
+		{
+			this->board_instance->ShowBoardOptionsText(false);
+			this->board_instance->ShowBoardText(true);
+			this->board_instance->SetBoardText("* You ate the pie.\n* Your HP was maxed out.");
+			this->health = 100;
+			this->player_heal.play();
+			this->player_health_text.setString("100 / 100");
+			this->heal_items_available = 0;
+			this->health_sprite_cover.setScale(1.f, 1.f);
+			this->HoverButton(this->button_hovered);
+			this->use_button_tick = current_tick + 800;
+		}
+		else{
+			this->TogglePlayerTurn(false);
+			this->use_button_tick = current_tick + 1500;
+		}	
+	}
+}
+
+
+
+void Player::DoMercy(){
+	const DWORD current_tick = GetTickCount();
+	if (this->use_button_tick < current_tick)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		{
+			this->board_instance->ShowBoardOptionsText(false);
+			this->TogglePlayerTurn(false);
+			this->use_button_tick = current_tick + 1500;
+		}
+	}
+}
+
+
+
+void Player::DoFight(){
+	const DWORD current_tick = GetTickCount();
+	if (this->use_button_tick > current_tick)
+	{
+		if (this->use_button_tick - 1900 > current_tick)
+		{
+			this->miss_attack_sprite.setTexture(this->attack_texture[0], true);
+		}
+		else if (this->use_button_tick - 1800 > current_tick)
+		{
+			this->miss_attack_sprite.setTexture(this->attack_texture[1], true);
+		}
+		else if (this->use_button_tick - 1700 > current_tick)
+		{
+			this->miss_attack_sprite.setTexture(this->attack_texture[2], true);
 		}
 		else
 		{
-			// if (this->button_pressed == Button_Type::None)
-			// {
-			// 	if (current_tick > button_hover_move_tick)
-			// 	{
-			// 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			// 		{
-			// 			if (this->button_hovered == Button_Type::Fight_Button)
-			// 			{
-			// 				this->button_hovered = Button_Type::Mercy_Button;
-			// 			}
-			// 			else
-			// 			{
-			// 				this->button_hovered--;
-			// 			}
-			// 			this->HoverButton(this->button_hovered);
-			// 			button_hover_move_tick = current_tick + 250;
-			// 		}
-
-			// 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			// 		{
-			// 			if (this->button_hovered == Button_Type::Mercy_Button)
-			// 			{
-			// 				this->button_hovered = Button_Type::Fight_Button;
-			// 			}
-			// 			else
-			// 			{
-			// 				this->button_hovered++;
-			// 			}
-			// 			this->HoverButton(this->button_hovered);
-			// 			button_hover_move_tick = current_tick + 250;
-			// 		}
-			// 	}
-
-			// 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-			// 	{
-			// 		const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
-
-			// 		if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Fight_Button)))
-			// 		{
-			// 			this->button_pressed = Button_Type::Fight_Button;
-			// 			this->TogglePlayerTurn(false);
-			// 			this->player_attack.play();
-			// 			this->use_button_tick = current_tick + 2000;
-			// 		}
-			// 		else if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Act_Button)))
-			// 		{
-			// 			this->button_pressed = Button_Type::Act_Button;
-			// 			this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-			// 			this->board_instance->SetBoardOptionsText("* Check");
-			// 			this->board_instance->ShowBoardOptionsText(true);
-			// 			this->board_instance->ShowBoardText(false);
-			// 			this->use_button_tick = current_tick + 200;
-			// 		}
-			// 		else if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Item_Button)))
-			// 		{
-			// 			if (this->heal_items_available)
-			// 			{
-			// 				this->button_pressed = Button_Type::Item_Button;
-			// 				this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-			// 				this->board_instance->SetBoardOptionsText("* Pie");
-			// 				this->board_instance->ShowBoardOptionsText(true);
-			// 				this->board_instance->ShowBoardText(false);
-			// 				this->use_button_tick = current_tick + 200;
-			// 			}
-			// 		}
-			// 		else if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Mercy_Button)))
-			// 		{
-			// 			this->button_pressed = Button_Type::Mercy_Button;
-			// 			this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-			// 			this->board_instance->SetBoardOptionsText("* Skip Turn");
-			// 			this->board_instance->ShowBoardOptionsText(true);
-			// 			this->board_instance->ShowBoardText(false);
-			// 			this->use_button_tick = current_tick + 200;
-			// 		}
-			// 	}
-			// }else{
-			// 	if (this->use_button_tick < current_tick){
-			// 		this->board_instance->ShowBoardText(false);
-			// 		this->board_instance->ShowBoardOptionsText(false);
-			// 		this->TogglePlayerTurn(false);
-			// 		this->use_button_tick = current_tick + 800;
-			// 	}
-
-			// }
-			// else if (this->button_pressed == Button_Type::Act_Button)
-			// {
-			// 	if (this->use_button_tick < current_tick)
-			// 	{
-			// 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-			// 		{
-			// 			if (!this->board_instance->IsBoardTextShown())
-			// 			{
-			// 				this->board_instance->ShowBoardOptionsText(false);
-			// 				this->board_instance->ShowBoardText(true);
-			// 				this->board_instance->SetBoardText("* W.D GASTER - ATK ??? DEF ???\n* Like nothing you've seen before.");
-			// 				this->HoverButton(this->button_hovered);
-			// 				this->use_button_tick = current_tick + 800;
-			// 			}
-			// 			else
-			// 			{
-			// 				this->TogglePlayerTurn(false);
-			// 				this->use_button_tick = current_tick + 1500;
-			// 			}
-			// 		}
-			// 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !this->board_instance->IsBoardTextShown())
-			// 		{
-			// 			this->board_instance->ShowBoardOptionsText(false);
-			// 			this->board_instance->ShowBoardText(true);
-			// 			this->button_pressed = Button_Type::None;
-			// 			this->HoverButton(this->button_hovered);
-			// 		}
-			// 	}
-			// }
-			// else if (this->button_pressed == Button_Type::Item_Button)
-			// {
-			// 	if (this->use_button_tick < current_tick)
-			// 	{
-			// 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-			// 		{
-			// 			if (!this->board_instance->IsBoardTextShown())
-			// 			{
-			// 				this->board_instance->ShowBoardOptionsText(false);
-			// 				this->board_instance->ShowBoardText(true);
-			// 				this->board_instance->SetBoardText("* You ate the pie.\n* Your HP was maxed out.");
-			// 				this->health = 100;
-			// 				this->player_heal.play();
-			// 				this->player_health_text.setString("100 / 100");
-			// 				this->heal_items_available = 0;
-			// 				this->health_sprite_cover.setScale(1.f, 1.f);
-			// 				this->HoverButton(this->button_hovered);
-			// 				this->use_button_tick = current_tick + 800;
-			// 			}
-			// 			else
-			// 			{
-			// 				this->TogglePlayerTurn(false);
-			// 				this->use_button_tick = current_tick + 1500;
-			// 			}
-			// 		}
-			// 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X) && !this->board_instance->IsBoardTextShown())
-			// 		{
-			// 			this->board_instance->ShowBoardOptionsText(false);
-			// 			this->board_instance->ShowBoardText(true);
-			// 			this->button_pressed = Button_Type::None;
-			// 			this->HoverButton(this->button_hovered);
-			// 		}
-			// 	}
-			// }
-			// else if (this->button_pressed == Button_Type::Mercy_Button)
-			// {
-			// 	if (this->use_button_tick < current_tick)
-			// 	{
-			// 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
-			// 		{
-			// 			this->board_instance->ShowBoardOptionsText(false);
-			// 			this->TogglePlayerTurn(false);
-			// 			this->use_button_tick = current_tick + 1500;
-			// 		}
-			// 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::X))
-			// 		{
-			// 			this->board_instance->ShowBoardOptionsText(false);
-			// 			this->board_instance->ShowBoardText(true);
-			// 			this->button_pressed = Button_Type::None;
-			// 			this->HoverButton(this->button_hovered);
-			// 		}
-			// 	}
-			// }
+			this->miss_attack_sprite.setTexture(this->miss_attack_texture, true);
 		}
-
-		// if (this->use_button_tick > current_tick && this->button_pressed == Button_Type::Fight_Button) // Yeah... this is to "switch" between the attack textures to give some slice effect.
-		// {
-		// 	if (this->use_button_tick - 1900 > current_tick)
-		// 	{
-		// 		this->miss_attack_sprite.setTexture(this->attack_texture[0], true);
-		// 	}
-		// 	else if (this->use_button_tick - 1800 > current_tick)
-		// 	{
-		// 		this->miss_attack_sprite.setTexture(this->attack_texture[1], true);
-		// 	}
-		// 	else if (this->use_button_tick - 1700 > current_tick)
-		// 	{
-		// 		this->miss_attack_sprite.setTexture(this->attack_texture[2], true);
-		// 	}
-		// 	else
-		// 	{
-		// 		this->miss_attack_sprite.setTexture(this->miss_attack_texture, true);
-		// 	}
-		// 	this->window_instance->draw(this->miss_attack_sprite);
-		// }
-
-		this->window_instance->draw(this->health_sprite);
-		this->window_instance->draw(this->health_sprite_cover);
-		this->window_instance->draw(this->player_name_text);
-		this->window_instance->draw(this->player_health_text);
+		this->fire(PROP_ID::SPRITE, this->miss_attack_sprite);
 	}
-	this->window_instance->draw(this->player_sprite);
+}
+
+void Player::Update()
+{
+	const DWORD current_tick = GetTickCount();
+	this->is_moving = false;
+	
+	if (this->health > 0){
+		this->DamagedUpdate();
+	}
+	this->fire(PROP_ID::SPRITE, this->health_sprite);
+	this->fire(PROP_ID::SPRITE, this->health_sprite_cover);
+	this->fire(PROP_ID::TEXT, this->player_health_text);
+	this->fire(PROP_ID::TEXT, this->player_name_text);
+}
+
+
+void Player::Move(int cmd_id){
+	const sf::Vector2f pos = this->player_sprite.getPosition();
+	const sf::FloatRect dimensions = this->board_instance->GetBoardGlobalBounds();
+	this->is_moving = false;  //重置移动状态
+	
+	switch (cmd_id) {
+		case CMD_ID::LEFT:
+			if ((pos.x - 3.f) > dimensions.left + 5.5f) {
+				this->player_sprite.move(-3.f, 0.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::RIGHT:
+			if ((pos.x + 3.f) < (dimensions.left + dimensions.width) - 20.5f) {
+				this->player_sprite.move(3.f, 0.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::UP:
+			if ((pos.y - 3.f) > dimensions.top + 5.5f) {
+				this->player_sprite.move(0.f, -3.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::DOWN:
+			if ((pos.y + 3.f) < (dimensions.top + dimensions.height) - 20.5f) {
+				this->player_sprite.move(0.f, 3.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::LEFTUP:
+			if ((pos.x - 3.f) > dimensions.left + 5.5f) {
+				this->player_sprite.move(-3.f, 0.f);
+				this->is_moving = true;
+			}
+			if ((pos.y - 3.f) > dimensions.top + 5.5f) {
+				this->player_sprite.move(0.f, -3.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::LEFTDOWN:
+			if ((pos.x - 3.f) > dimensions.left + 5.5f) {
+				this->player_sprite.move(-3.f, 0.f);
+				this->is_moving = true;
+			}
+			if ((pos.y + 3.f) < (dimensions.top + dimensions.height) - 20.5f) {
+				this->player_sprite.move(0.f, 3.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::RIGHTUP:
+			if ((pos.x + 3.f) < (dimensions.left + dimensions.width) - 20.5f) {
+				this->player_sprite.move(3.f, 0.f);
+				this->is_moving = true;
+			}
+			if ((pos.y - 3.f) > dimensions.top + 5.5f) {
+				this->player_sprite.move(0.f, -3.f);
+				this->is_moving = true;
+			}
+			break;
+			
+		case CMD_ID::RIGHTDOWN:
+			if ((pos.x + 3.f) < (dimensions.left + dimensions.width) - 20.5f) {
+				this->player_sprite.move(3.f, 0.f);
+				this->is_moving = true;
+			}
+			if ((pos.y + 3.f) < (dimensions.top + dimensions.height) - 20.5f) {
+				this->player_sprite.move(0.f, 3.f);
+				this->is_moving = true;
+			}
+			break;
+	}
+}
+
+void Player::NextStep(int cmd_id) {
+	if (!this->player_turn) {
+		Move(cmd_id);
+		//Notify();
+		this->fire(PROP_ID::SPRITE, this->player_sprite);
+	}else{
+		if(this->button_pressed == Button_Type::None){
+			switch(cmd_id){
+				case(CMD_ID::LEFT):
+					this->HoverButtonUpdate(CMD_ID::LEFT);
+					break;
+			
+				case(CMD_ID::RIGHT):
+					this->HoverButtonUpdate(CMD_ID::RIGHT);
+					break;
+				
+				case(CMD_ID::Z):
+					this->PressButton();
+					break;
+			}
+		}else if(this->button_pressed == Button_Type::Fight_Button){
+			this->DoFight();
+		}else if(this->button_pressed == Button_Type::Act_Button){
+			switch(cmd_id){
+				case(CMD_ID::Z):
+					this->DoAct();
+					break;
+				case(CMD_ID::X):
+					this->CancelButtonPressed();
+				break;
+			}
+		}else if(this->button_pressed == Button_Type::Item_Button){
+			switch(cmd_id){
+				case(CMD_ID::Z):
+					this->DoItem();
+					break;
+				case(CMD_ID::X):
+					this->CancelButtonPressed();
+					break;
+			}
+		}else if(this->button_pressed == Button_Type::Mercy_Button){
+			switch(cmd_id){
+				case(CMD_ID::Z):
+					this->DoMercy();
+					break;
+				case(CMD_ID::X):
+					this->CancelButtonPressed();
+					break;
+			}
+		}
+		this->fire(PROP_ID::SPRITE, this->health_sprite);
+		this->fire(PROP_ID::SPRITE, this->health_sprite_cover);
+	}
 }
 
 void Player::Reset()

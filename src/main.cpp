@@ -1,6 +1,6 @@
 #include "main.h"
 #include "file_manager.h"
-#include "game.h"
+#include "app/game.h"
 
 int main()
 {

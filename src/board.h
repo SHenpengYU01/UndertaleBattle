@@ -2,7 +2,7 @@
 #define BOARD_H
 
 #include "main.h"
-
+#include "file_manager.h"
 enum Button_Type
 {
 	Fight_Button,

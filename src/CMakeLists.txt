@@ -18,12 +18,14 @@
 
 # 设置源文件列表
 set(SOURCES
+    view/mainwindow.cpp
+    game/game.cpp
+    common/frame.cpp
     main.cpp
     file_manager.cpp
     player.cpp
     gaster.cpp
     board.cpp
-    game.cpp
     gamefile.cpp
 )
 

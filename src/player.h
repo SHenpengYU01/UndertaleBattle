@@ -3,10 +3,14 @@
 
 #include "main.h"
 #include "board.h"
+#include "common/frame.h"
+#include "common/property_id.h"
+#include "view/mainwindow.h"
+
 
 class Board;
 
-class Player
+class Player : public PropertyTrigger
 {
 	private:
 		sf::Font player_name_font;
@@ -38,13 +42,14 @@ class Player
 		char button_pressed;
 		char button_hovered;
 		char heal_items_available;
-		sf::RenderWindow *window_instance;
+
+
 		Board *board_instance;
 
 		void HoverButton(const char button_id);
 
 	public:
-		explicit Player(sf::RenderWindow *window_instance, Board *board_instance);
+		explicit Player(Board *board_instance);
 		
 		inline sf::Vector2f GetPlayerPosition() const
 		{
@@ -83,8 +88,36 @@ class Player
 
 		void TogglePlayerTurn(const bool toggle, const std::string &board_text = "None", const DWORD board_text_delay = 0);
 		void TakeDamage(const int amount);
+		void DamagedUpdate();
+		void HoverButtonUpdate(int direction);
+
+		void Move(int cmd_id);
+		void PressButton();
+		void PressFight();
+		void PressAct();
+		void PressItem();
+		void PressMercy();
+
+		void DoFight();
+		void DoAct();
+		void DoItem();
+		void DoMercy();
+		void CancelButtonPressed();
+		
 		void Update();
 		void Reset();
+
+		std::function<void(int)> GetNextCommand(){
+			return [this](int cmd_id)->void
+			{
+				this->NextStep(cmd_id);
+			};
+		}
+
+		void NextStep(int cmd_id);
+
+		
+
 };
 
 #endif

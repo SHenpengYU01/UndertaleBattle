@@ -56,6 +56,14 @@ build src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx.gch: CXX_CO
   OBJECT_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
   OBJECT_FILE_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
 
+build src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/view/mainwindow.cpp.o: CXX_COMPILER__UndertaleFight_unscanned_RelWithDebInfo /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/src/view/mainwindow.cpp | src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx.gch || cmake_object_order_depends_target_UndertaleFight_RELWITHDEBINFO
+  DEFINES = -DCMAKE_INTDIR=\"RelWithDebInfo\"
+  DEP_FILE = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/view/mainwindow.cpp.o.d
+  FLAGS = -O2 -g -DNDEBUG -Winvalid-pch -include /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx
+  INCLUDES = -isystem /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/include
+  OBJECT_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
+  OBJECT_FILE_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/view
+
 build src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/main.cpp.o: CXX_COMPILER__UndertaleFight_unscanned_RelWithDebInfo /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/src/main.cpp | src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx.gch || cmake_object_order_depends_target_UndertaleFight_RELWITHDEBINFO
   DEFINES = -DCMAKE_INTDIR=\"RelWithDebInfo\"
   DEP_FILE = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/main.cpp.o.d
@@ -112,6 +120,14 @@ build src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/gamefile.cpp.o: CXX_COMPI
   OBJECT_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
   OBJECT_FILE_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
 
+build src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/common/frame.cpp.o: CXX_COMPILER__UndertaleFight_unscanned_RelWithDebInfo /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/src/common/frame.cpp | src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx.gch || cmake_object_order_depends_target_UndertaleFight_RELWITHDEBINFO
+  DEFINES = -DCMAKE_INTDIR=\"RelWithDebInfo\"
+  DEP_FILE = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/common/frame.cpp.o.d
+  FLAGS = -O2 -g -DNDEBUG -Winvalid-pch -include /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/cmake_pch.hxx
+  INCLUDES = -isystem /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/include
+  OBJECT_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
+  OBJECT_FILE_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/common
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target UndertaleFight
@@ -120,7 +136,7 @@ build src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/gamefile.cpp.o: CXX_COMPI
 #############################################
 # Link the executable output/RelWithDebInfo/UndertaleFight
 
-build output/RelWithDebInfo/UndertaleFight: CXX_EXECUTABLE_LINKER__UndertaleFight_RelWithDebInfo src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/main.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/file_manager.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/player.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/gaster.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/board.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/game.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/gamefile.cpp.o | /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-graphics.so.2.5.1 /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-window.so.2.5.1 /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-audio.so.2.5.1 /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-system.so.2.5.1
+build output/RelWithDebInfo/UndertaleFight: CXX_EXECUTABLE_LINKER__UndertaleFight_RelWithDebInfo src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/view/mainwindow.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/main.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/file_manager.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/player.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/gaster.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/board.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/game.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/gamefile.cpp.o src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo/common/frame.cpp.o | /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-graphics.so.2.5.1 /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-window.so.2.5.1 /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-audio.so.2.5.1 /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-system.so.2.5.1
   FLAGS = -O2 -g -DNDEBUG
   LINK_LIBRARIES = -Wl,-rpath,/mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib  /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-graphics.so.2.5.1  /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-window.so.2.5.1  /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-audio.so.2.5.1  /mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/SFML/lib/libsfml-system.so.2.5.1
   OBJECT_DIR = src/CMakeFiles/UndertaleFight.dir/RelWithDebInfo
