@@ -1,0 +1,5 @@
+/mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/CMakeFiles/edit_cache.dir
+/mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/CMakeFiles/rebuild_cache.dir
+/mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/src/CMakeFiles/UndertaleFight.dir
+/mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/src/CMakeFiles/edit_cache.dir
+/mnt/d/_code/Cpp/summer/ut-sfml3/ut-gaster-fight/build/src/CMakeFiles/rebuild_cache.dir
