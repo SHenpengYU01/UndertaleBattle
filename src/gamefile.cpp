@@ -17,7 +17,7 @@ GameFile::GameFile(){
 		this->credits_text.setCharacterSize(20);
 		this->credits_text.setFillColor(sf::Color::White);
 		this->credits_text.setPosition(50.f, 220.f);
-		this->credits_text.setString("Credits:\n* Toby Fox for Undertale.\n* Brunoo16 for ut-gaster-fight.\n* And you for playing this fan-game.");
+		this->credits_text.setString("Credits:\n* Toby Fox for Undertale.\n* Brunoo16 for ut-gaster-fight.\n* THB Wiki for characters and music\n* TakWolf for fusion-pixel-font\n* And you for playing this fan-game.");
 	}
 }
 
