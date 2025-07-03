@@ -1,7 +1,6 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "../main.h"
 #include "../viewmodel/gamefile.h"
 #include "../viewmodel/board.h"
 #include "../viewmodel/player.h"

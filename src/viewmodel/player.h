@@ -1,7 +1,6 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "../main.h"
 #include "board.h"
 #include "../common/frame.h"
 #include "../common/property_id.h"

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../main.h"
 #include "../common/property_id.h"
 #include "../common/frame.h"
 #include <any>

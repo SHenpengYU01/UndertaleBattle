@@ -1,4 +1,3 @@
-#include "main.h"
 #include "viewmodel/file_manager.h"
 #include "app/game.h"
 
