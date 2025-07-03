@@ -10,7 +10,7 @@ Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_
 	FileManager::LoadFromFile(this->attack_texture[0], "bin/sprites/slice_1.png");
 	FileManager::LoadFromFile(this->attack_texture[1], "bin/sprites/slice_2.png");
 	FileManager::LoadFromFile(this->attack_texture[2], "bin/sprites/slice_3.png");
-	FileManager::LoadFromFile(this->player_name_font, "bin/fonts/mars_needs_cunnilingus.ttf");
+	FileManager::LoadFromFile(this->player_name_font, "bin/fonts/fusion-pixel-10px-monospaced-zh_hans.ttf");
 	FileManager::LoadFromFile(this->damage_buffer, "bin/audio/hurtsound.wav");
 	FileManager::LoadFromFile(this->player_heal_buffer, "bin/audio/healsound.wav");
 	FileManager::LoadFromFile(this->player_attack_buffer, "bin/audio/player_attack.wav");
@@ -28,7 +28,7 @@ Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_
 		this->player_name_text.setCharacterSize(23);
 		this->player_name_text.setFillColor(sf::Color::White);
 		this->player_name_text.setPosition(32.f, 394.f);
-		this->player_name_text.setString("Chara   LV 20");
+		this->player_name_text.setString(L"博丽灵梦   LV 6");
 		this->player_health_text.setFont(this->player_name_font);
 		this->player_health_text.setCharacterSize(23);
 		this->player_health_text.setFillColor(sf::Color::White);
@@ -85,7 +85,6 @@ void Player::TogglePlayerTurn(const bool toggle, const std::string &board_text, 
 	this->player_turn = toggle;
 
 	const sf::Vector2f board_size = this->board_instance->GetBoardSize();
-
 
 	if (toggle)
 	{
@@ -192,7 +191,7 @@ void Player::PressAct(){
 	const DWORD current_tick = GetTickCount();
 	this->button_pressed = Button_Type::Act_Button;
 	this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-	this->board_instance->SetBoardOptionsText("* Check");
+	this->board_instance->SetBoardOptionsText("* 检查");
 	this->board_instance->ShowBoardOptionsText(true);
 	this->board_instance->ShowBoardText(false);
 	this->use_button_tick = current_tick + 200;
@@ -205,7 +204,7 @@ void Player::PressItem(){
 	{
 		this->button_pressed = Button_Type::Item_Button;
 		this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-		this->board_instance->SetBoardOptionsText("* Pie");
+		this->board_instance->SetBoardOptionsText("* 蜂蜜特饮");
 		this->board_instance->ShowBoardOptionsText(true);
 		this->board_instance->ShowBoardText(false);
 		this->use_button_tick = current_tick + 200;
@@ -240,7 +239,7 @@ void Player::PressMercy(){
 	{
 		this->button_pressed = Button_Type::Mercy_Button;
 		this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-		this->board_instance->SetBoardOptionsText("* Skip Turn");
+		this->board_instance->SetBoardOptionsText("* 溜走");
 		this->board_instance->ShowBoardOptionsText(true);
 		this->board_instance->ShowBoardText(false);
 		this->use_button_tick = current_tick + 200;
@@ -255,7 +254,7 @@ void Player::DoAct(){
 		{
 			this->board_instance->ShowBoardOptionsText(false);
 			this->board_instance->ShowBoardText(true);
-			this->board_instance->SetBoardText("* W.D GASTER - ATK ??? DEF ???\n* Like nothing you've seen before.");
+			this->board_instance->SetBoardText("* 封兽鵺 - 攻击 ??? 防御 ???\n* 一看到别人在兴致勃勃做事，\n她就不由得想在暗地里阻挠别人，\n这就是她的性格.");
 			this->HoverButton(this->button_hovered);
 			this->use_button_tick = current_tick + 800;
 		}
@@ -285,7 +284,7 @@ void Player::DoItem(){
 		{
 			this->board_instance->ShowBoardOptionsText(false);
 			this->board_instance->ShowBoardText(true);
-			this->board_instance->SetBoardText("* You ate the pie.\n* Your HP was maxed out.");
+			this->board_instance->SetBoardText("* 你喝了蜂蜜特饮\n* 你感觉很好喝。");
 			this->health = 100;
 			this->player_heal.play();
 			this->player_health_text.setString("100 / 100");

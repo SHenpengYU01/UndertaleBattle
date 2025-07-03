@@ -30,11 +30,16 @@ class Game
 		Board *board;
 		Player *player;
 		Gaster *gaster;
+		std::vector<std::function<void()>> turn_handlers;
 
 	public:
 		Game();
 
 		void Update();
+		void HandleWindowEvent();
+		void HandlePlayerDeath();
+		void HandleGameEnd();
+		void InitTurnHandlers();
 };
 
 #endif

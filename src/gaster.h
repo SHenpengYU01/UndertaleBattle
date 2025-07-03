@@ -30,7 +30,7 @@ class Gaster: public PropertyTrigger
 	private:
 		sf::Font dialog_font;
 		sf::Text dialog;
-		std::string dialog_text;
+		std::wstring dialog_text;
 		DWORD text_position;
 		DWORD text_tick;
 		DWORD text_duration_tick;
@@ -65,7 +65,6 @@ class Gaster: public PropertyTrigger
 		std::deque<Blaster> blasters;
 
 		Player *player_instance;
-		// sf::RenderWindow *window_instance;
 
 	public:
 		explicit Gaster(Player *player_instance);

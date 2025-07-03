@@ -11,17 +11,16 @@ Board::Board() : board_width(165.f), board_text_position(0), board_text_tick(0)
 	FileManager::LoadFromFile(this->mercy_button_texture, "bin/sprites/mercybt.png");
 	FileManager::LoadFromFile(this->mercy_button_hover_texture, "bin/sprites/mercybt_hover.png");
 	FileManager::LoadFromFile(this->hp_texture, "bin/sprites/hp.png");
-	FileManager::LoadFromFile(this->board_text_font, "bin/fonts/determination_mono.ttf");
+	FileManager::LoadFromFile(this->board_text_font, "bin/fonts/fusion-pixel-10px-monospaced-zh_hans.ttf");
 	FileManager::LoadFromFile(this->text_update_sound_buffer, "bin/audio/border_text.wav");
 
 	if (!FileManager::IsAnyFileMissing())
 	{
-		// this->window_instance = window_instance;
 		this->hp_sprite.setTexture(this->hp_texture);
 		this->hp_sprite.setPosition(sf::Vector2f(226.f, 404.f));
 		this->board_rectangle.setPosition(sf::Vector2f(325.f, 302.f));
-		this->board_rectangle.setSize(sf::Vector2f(100.f, 165.f));
-                this->board_rectangle.setOrigin(sf::Vector2f(this->board_rectangle.getLocalBounds().width / 2.f, this->board_rectangle.getLocalBounds().height / 2.f));
+		this->board_rectangle.setSize(sf::Vector2f(165.f, 165.f));
+        this->board_rectangle.setOrigin(sf::Vector2f(this->board_rectangle.getLocalBounds().width / 2.f, this->board_rectangle.getLocalBounds().height / 2.f));
 		this->board_rectangle.setOutlineColor(sf::Color::White);
 		this->board_rectangle.setFillColor(sf::Color(255, 255, 255, 0));
 		this->board_rectangle.setOutlineThickness(5);
@@ -52,7 +51,9 @@ void Board::SetBoardText(const std::string &text, const DWORD delay)
 	this->board_text_tick = GetTickCount() + delay;
 	this->board_text_position = 0;
 	this->board_text.setString("");
-	this->board_text_buffer = text;
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	std::wstring wide_text = converter.from_bytes(text);
+	this->board_text_buffer = wide_text;
 }
 
 sf::FloatRect Board::GetButtonGlobalBounds(const char button_type) const
@@ -130,13 +131,6 @@ void Board::Update()
 {
 	const DWORD current_tick = GetTickCount();
 
-	// this->window_instance->draw(this->board_rectangle);
-	// this->window_instance->draw(this->hp_sprite);
-	// this->window_instance->draw(this->fight_button_sprite);
-	// this->window_instance->draw(this->act_button_sprite);
-	// this->window_instance->draw(this->item_button_sprite);
-	// this->window_instance->draw(this->mercy_button_sprite);
-
 	this->fire(PROP_ID::RECTANGLE_SHAPE, this->board_rectangle);
 	this->fire(PROP_ID::SPRITE, this->hp_sprite);
 	this->fire(PROP_ID::SPRITE, this->fight_button_sprite);
@@ -155,14 +149,11 @@ void Board::Update()
 			this->board_text_position++;
 			this->text_update_sound.play();
 		}
-
-		// this->window_instance->draw(this->board_text);
 		this->fire(PROP_ID::TEXT, this->board_text);
 	}
 
 	if (this->show_board_options_text)
 	{
-		// this->window_instance->draw(this->board_options_text);
 		this->fire(PROP_ID::TEXT, this->board_options_text);
 	}
 }

@@ -37,7 +37,7 @@ class Board : public PropertyTrigger
 		sf::Font board_text_font;
 		sf::Text board_text;
 		sf::Text board_options_text;
-		std::string board_text_buffer;
+		std::wstring board_text_buffer;
 		sf::SoundBuffer text_update_sound_buffer;
 		sf::Sound text_update_sound;
 		DWORD board_text_position;
@@ -85,7 +85,9 @@ class Board : public PropertyTrigger
 
 		inline void SetBoardOptionsText(const std::string &text)
 		{
-			board_options_text.setString(text);
+			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+			std::wstring wide_text = converter.from_bytes(text);
+			board_options_text.setString(wide_text);
 		}
 
 		inline void SetBoardWidth(const float width)

@@ -2,32 +2,31 @@
 
 Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0)
 {
-	FileManager::LoadFromFile(this->gaster_texture, "bin/sprites/gaster.png");
-	FileManager::LoadFromFile(this->gaster_surprised_texture, "bin/sprites/gaster_2.png");
+	FileManager::LoadFromFile(this->gaster_texture, "bin/sprites/evil.png");
+	FileManager::LoadFromFile(this->gaster_surprised_texture, "bin/sprites/utsuho.png");
 	FileManager::LoadFromFile(this->blaster_texture[0], "bin/sprites/blaster_default.png");
 	FileManager::LoadFromFile(this->blaster_texture[1], "bin/sprites/blaster_blue.png");
 	FileManager::LoadFromFile(this->blaster_texture[2], "bin/sprites/blaster_orange.png");
-	FileManager::LoadFromFile(this->blaster_firing_texture[0], "bin/sprites/blaster_fire_1.png");
-	FileManager::LoadFromFile(this->blaster_firing_texture[1], "bin/sprites/blaster_fire_2.png");
+	FileManager::LoadFromFile(this->blaster_firing_texture[0], "bin/sprites/blaster_fire.png");
+	FileManager::LoadFromFile(this->blaster_firing_texture[1], "bin/sprites/blaster_fire.png");
 	FileManager::LoadFromFile(this->blaster_laser_texture[0], "bin/sprites/blaster_default_laser.png");
 	FileManager::LoadFromFile(this->blaster_laser_texture[1], "bin/sprites/blaster_blue_laser.png");
 	FileManager::LoadFromFile(this->blaster_laser_texture[2], "bin/sprites/blaster_orange_laser.png");
 	FileManager::LoadFromFile(this->speech_bubble_texture, "bin/sprites/speech_bubble.png");
-	FileManager::LoadFromFile(this->dialog_font, "bin/fonts/determination_mono.ttf");
+	FileManager::LoadFromFile(this->dialog_font, "bin/fonts/fusion-pixel-10px-monospaced-zh_hans.ttf");
 	FileManager::LoadFromFile(this->blaster_intro, "bin/audio/blaster_intro.wav");
 	FileManager::LoadFromFile(this->blaster_fire, "bin/audio/blaster_fire.wav");
 
 	if (!FileManager::IsAnyFileMissing())
 	{
 		this->player_instance = player_instance;
-		// this->window_instance = window_instance;
 		this->speech_bubble_sprite.setTexture(this->speech_bubble_texture);
 		this->speech_bubble_sprite.setPosition(58.f, 30.f);
 		this->gaster_sprite.setTexture(this->gaster_texture);
-		this->gaster_sprite.setPosition(sf::Vector2f(285.f, 11.f));
-		this->gaster_sprite.setScale(sf::Vector2f(0.8f, 0.8f));
+		this->gaster_sprite.setPosition(sf::Vector2f(275.f, 30.f));
+		this->gaster_sprite.setScale(sf::Vector2f(1.6f, 1.6f));
 		this->dialog.setFont(this->dialog_font);
-		this->dialog.setCharacterSize(15);
+		this->dialog.setCharacterSize(20);
 		this->dialog.setFillColor(sf::Color::Black);
 		this->dialog.setPosition(70.f, 30.f);
 	}
@@ -38,7 +37,10 @@ void Gaster::SetText(const std::string &text, const DWORD text_duration)
 	this->text_duration_tick = GetTickCount() + text_duration;
 	this->text_position = 0;
 	this->dialog.setString("");
-	this->dialog_text = text;
+	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+	std::wstring wide_text = converter.from_bytes(text);
+	this->dialog_text = wide_text;
+
 }
 
 void Gaster::ToggleGasterSurprised(const bool toggle)
@@ -46,10 +48,12 @@ void Gaster::ToggleGasterSurprised(const bool toggle)
 	if (toggle)
 	{
 		this->gaster_sprite.setTexture(this->gaster_surprised_texture);
+		this->gaster_sprite.setPosition(sf::Vector2f(260.f, 10.f));
 	}
 	else
 	{
 		this->gaster_sprite.setTexture(this->gaster_texture);
+		this->gaster_sprite.setPosition(sf::Vector2f(275.f, 30.f));
 	}
 }
 
@@ -65,14 +69,11 @@ void Gaster::Update()
 			this->dialog.setString(this->dialog.getString() + this->dialog_text[this->text_position]);
 			this->text_position++;
 		}
-		// this->window_instance->draw(this->speech_bubble_sprite);
-		// this->window_instance->draw(this->dialog);
 
 		this->fire(PROP_ID::SPRITE, this->speech_bubble_sprite);
 		this->fire(PROP_ID::TEXT, this->dialog);
 	}
 
-	// this->window_instance->draw(this->gaster_sprite);
 	this->fire(PROP_ID::SPRITE, this->gaster_sprite);
 
 	if (!this->blasters.empty())
@@ -81,7 +82,6 @@ void Gaster::Update()
 		{
 			if (it->spawn_interval < current_tick)
 			{
-				// this->window_instance->draw(it->blaster_sprite);
 				this->fire(PROP_ID::SPRITE, it->blaster_sprite);
 
 				if (!it->state_firing)

@@ -5,7 +5,7 @@
 #include "board.h"
 #include "common/frame.h"
 #include "common/property_id.h"
-#include "view/mainwindow.h"
+// #include "view/mainwindow.h"
 
 
 class Board;
