@@ -114,22 +114,22 @@ void Game::InitTurnHandlers(){
         [this](){
             DWORD current_tick = GetTickCount();
             this->current_turn = 1;
-            this->turn_tick = current_tick + 2000;
-            this->gaster->SetText("你好", 2000);
+            this->turn_tick = current_tick + 4000;
+            this->gaster->SetText("\n\n(￣▽￣)~*", 4000);
         },
         
         [this](){
             DWORD current_tick = GetTickCount();
             this->current_turn = 2;
-            this->turn_tick = current_tick + 1000;
-            this->gaster->SetText("测试用", 1000);
+            this->turn_tick = current_tick + 3000;
+            this->gaster->SetText("测试用\n\n(=´o｀=)", 3000);
         },
 
         [this](){
             DWORD current_tick = GetTickCount();
             this->current_turn = 3;
             this->turn_tick = current_tick + 5000;
-            this->gaster->SetText("Well...\nLet's get this over with.", 5000);
+            this->gaster->SetText("（若无其事）\n\n┗( ▔, ▔ )┛", 5000);
         },
 
         [this](){
@@ -180,7 +180,7 @@ void Game::InitTurnHandlers(){
 
         [this](){
             DWORD current_tick = GetTickCount();
-            this->player->TogglePlayerTurn(true, "*好吧\n You are gonna have a bad time.", 1000);
+            this->player->TogglePlayerTurn(true, "* 好吧\n\n (▼ヘ▼#)", 1000);
             this->board->SetBoardWidth(400.f);
             this->current_turn = 8;   
         },
@@ -205,7 +205,7 @@ void Game::InitTurnHandlers(){
             this->current_turn = 10;
             this->gaster->ToggleGasterSurprised(true);
             this->turn_tick = current_tick + 10000;
-            this->gaster->SetText("Let's see how you\nhandle this...", 4500);
+            this->gaster->SetText("尝尝这个 \n\no(*｀ー´)o^", 4500);
 
             this->gaster->AddBlaster(sf::Vector2f(70.f, 90.f), Blaster_Direction::Direction_Down, 4600, Blaster_Type::Blue_Blaster, 500);
             this->gaster->AddBlaster(sf::Vector2f(106.f, 90.f), Blaster_Direction::Direction_Down, 4600, Blaster_Type::Blue_Blaster, 500);
@@ -252,7 +252,7 @@ void Game::InitTurnHandlers(){
         [this](){
             DWORD current_tick = GetTickCount();
             this->gaster->ToggleGasterSurprised(false);
-            this->player->TogglePlayerTurn(true, "* You feel like you can't win.", 700);
+            this->player->TogglePlayerTurn(true, "* 感觉要寄", 700);
             this->current_turn = 11;
         },
 
@@ -323,7 +323,7 @@ void Game::InitTurnHandlers(){
 
         [this](){
             DWORD current_tick = GetTickCount();
-            this->player->TogglePlayerTurn(true, "* He is preparing something...", 700);
+            this->player->TogglePlayerTurn(true, "* 她似乎在准备什么。。。", 700);
             this->board->SetBoardWidth(165.f);
             this->current_turn = 18;
         },
@@ -333,7 +333,7 @@ void Game::InitTurnHandlers(){
             this->turn_tick = current_tick + 2100;
             this->current_turn = 19;
 
-            this->gaster->SetText("Let's end this.", 2000);
+            this->gaster->SetText("闹剧结束！\n\n\\(￣へ￣)/", 2000);
             this->gaster->ToggleGasterSurprised(true);
         },
 
@@ -400,7 +400,7 @@ void Game::InitTurnHandlers(){
             DWORD current_tick = GetTickCount();
             this->turn_tick = current_tick + 4600;
             this->current_turn = 25;
-            this->gaster->SetText("That is it...\nNo more playing around.", 4500);
+            this->gaster->SetText("算了吧\n\no(´^｀)o", 4500);
             this->gamefile->StopMusic();
         },
 
@@ -409,7 +409,7 @@ void Game::InitTurnHandlers(){
             this->turn_tick = current_tick + 5100;
             this->current_turn = 26;
             this->gaster->ToggleGasterSurprised(true);
-            this->gaster->SetText("Since when were you the\none in control?", 5100);
+            this->gaster->SetText("你赢了\n\no(╥﹏╥)o", 5100);
             this->gaster->AddBlaster(sf::Vector2f(181.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
             this->gaster->AddBlaster(sf::Vector2f(217.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
             this->gaster->AddBlaster(sf::Vector2f(250.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
