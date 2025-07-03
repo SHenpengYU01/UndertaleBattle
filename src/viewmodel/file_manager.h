@@ -1,7 +1,7 @@
 #ifndef _FILE_MANAGER_H_
 #define _FILE_MANAGER_H_
 
-#include "main.h"
+#include "../main.h"
 
 class FileManager
 {

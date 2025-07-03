@@ -1,12 +1,12 @@
 #ifndef _GASTER_H_
 #define _GASTER_H_
 
-#include "main.h"
+#include "../main.h"
 #include "file_manager.h"
 #include "player.h"
 
-#include "common/frame.h"
-#include "common/property_id.h"
+#include "../common/frame.h"
+#include "../common/property_id.h"
 
 
 class Player;
