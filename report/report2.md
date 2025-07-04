@@ -32,8 +32,8 @@
 | **构建系统** | CMake + Ninja      | 自动化构建，支持并行编译              |
 | **依赖管理** | vcpkg              | 集中管理SFML等三方库                  |
 | **UI框架**   | SFML 2.5.1         | 跨平台图形渲染                        |
-| **协作平台** | GitHub Projects    | Issue跟踪+看板管理任务                |
-| **沟通工具** | 微信群 + 线下站会  | 定期进度同步会                   |
+| **协作平台** | GitHub     | Issue跟踪+看板管理任务                |
+| **沟通工具** | 微信群 + 线下集会  | 定期进度同步                   |
 
 ### （四）动态分工
 
@@ -120,6 +120,9 @@ graph TB
 #### 2.结果展示
 
 成果已发布到GitHub仓库 [UndertaleBattle](https://github.com/SHenpengYU01/UndertaleBattle)，Release页发布Linux版本可执行文件。
+
+![release](release.png)
+
 具体成果如下：
 
 - 人物对话：
