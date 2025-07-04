@@ -1,5 +1,0 @@
-/mnt/d/SummerPJ/UndertaleBattle/build/CMakeFiles/edit_cache.dir
-/mnt/d/SummerPJ/UndertaleBattle/build/CMakeFiles/rebuild_cache.dir
-/mnt/d/SummerPJ/UndertaleBattle/build/src/CMakeFiles/UndertaleFight.dir
-/mnt/d/SummerPJ/UndertaleBattle/build/src/CMakeFiles/edit_cache.dir
-/mnt/d/SummerPJ/UndertaleBattle/build/src/CMakeFiles/rebuild_cache.dir
