@@ -1,11 +1,10 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "../main.h"
-#include "../gamefile.h"
-#include "../board.h"
-#include "../player.h"
-#include "../gaster.h"
+#include "../viewmodel/gamefile.h"
+#include "../viewmodel/board.h"
+#include "../viewmodel/player.h"
+#include "../viewmodel/gaster.h"
 #include "../common/property_id.h"
 #include "../view/mainwindow.h"
 

@@ -1,5 +1,4 @@
-#include "main.h"
-#include "file_manager.h"
+#include "viewmodel/file_manager.h"
 #include "app/game.h"
 
 int main()

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "main.h"
 #include "file_manager.h"
 #include "player.h"
 

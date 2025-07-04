@@ -11,8 +11,8 @@
 #         CACHE STRING "Vcpkg toolchain file")
 # endif()
 
-# set(CMAKE_CXX_STANDARD 17)
-# set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # src/CMakeLists.txt
 
@@ -22,11 +22,11 @@ set(SOURCES
     app/game.cpp
     common/frame.cpp
     main.cpp
-    file_manager.cpp
-    player.cpp
-    gaster.cpp
-    board.cpp
-    gamefile.cpp
+    viewmodel/file_manager.cpp
+    viewmodel/player.cpp
+    viewmodel/gaster.cpp
+    viewmodel/board.cpp
+    viewmodel/gamefile.cpp
 )
 
 # 创建可执行文件
