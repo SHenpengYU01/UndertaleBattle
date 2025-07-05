@@ -1,7 +1,7 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "headers.h"
+#include "../headers.h"
 #include "file_manager.h"
 #include "../common/frame.h"
 #include "../common/property_id.h"

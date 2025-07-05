@@ -147,7 +147,6 @@ void Game::InitTurnHandlers(){
             this->gaster->AddBlaster(sf::Vector2f(530.f, 241.f), Blaster_Direction::Direction_Left, 1500, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(274.f, 90.f), Blaster_Direction::Direction_Down, 1650, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(530.f, 208.f), Blaster_Direction::Direction_Left, 1650, Blaster_Type::Default_Blaster, 120);
-            
         },
 
         [this](){
