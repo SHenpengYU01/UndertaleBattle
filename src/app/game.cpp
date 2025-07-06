@@ -2,13 +2,12 @@
 
 Game::Game() : window(sf::VideoMode(642, 481), "Gaster Fight", sf::Style::Titlebar | sf::Style::Close)
 {
-	Game::initialize();
+	this->initialize();
 }
 
 bool Game::initialize(){
     this->window.setFramerateLimit(60);
 	// this->window.setIcon(20, 19, this->gamefile->GetGameIcon().getPixelsPtr());
-	
 	GameFile* gamefile = new GameFile();
 	Board* board = new Board();
 	Player* player = new Player(board);

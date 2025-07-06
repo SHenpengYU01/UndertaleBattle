@@ -7,7 +7,9 @@
 GameViewModel::GameViewModel(Board* board, Player* player, GameFile* gamefile, Gaster* gaster):	m_board(board),
 	m_player(player),
 	m_gamefile(gamefile),
-	m_gaster(gaster)
+	m_gaster(gaster),
+	current_turn(0),
+	turn_tick(0)
 {
 
 }

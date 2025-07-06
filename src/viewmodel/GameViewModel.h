@@ -47,6 +47,7 @@ public:
 	int current_turn;
 	DWORD turn_tick;
     Gaster* m_gaster;
+	
 private:
     const int last_turn = 27;
 	std::vector<std::function<void()>> turn_handlers;

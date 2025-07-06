@@ -40,6 +40,8 @@ PropertyNotification MainWindow::GetNotification(int nf_id){
                     std::cerr << "Bad cast sf::Text " << std::endl;
                 }
             };
+        }
+        // switch(cmd_id){
         // case CMD_ID::NONE:
         //     return [this](const std::any& any)->void{
         //         try {
@@ -129,7 +131,6 @@ PropertyNotification MainWindow::GetNotification(int nf_id){
         //             std::cerr << "Bad cast sf::Text " << std::endl;
         //         }
         //     };                
-    }
 }
 
 
