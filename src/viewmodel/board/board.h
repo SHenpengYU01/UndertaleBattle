@@ -1,7 +1,6 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "../../headers.h"
 #include "../file_manager.h"
 #include "../../common/frame.h"
 #include "../../common/property_id.h"
@@ -45,6 +44,8 @@ class Board : public PropertyTrigger
 		sf::Sprite mercy_button_sprite;
 		sf::Texture hp_texture;
 		sf::Sprite hp_sprite;
+		sf::Texture fight_eye_texture;
+		sf::Sprite fight_eye_sprite;
 		sf::RectangleShape board_rectangle;
 		sf::Font board_text_font;
 		sf::Text board_text;
@@ -56,60 +57,67 @@ class Board : public PropertyTrigger
 		DWORD board_text_tick;
 		bool show_board_text;
 		bool show_board_options_text;
+		bool show_fight_eye;
 		float board_width;
-	
-	public:
+		float attack_bar_x;
+		bool flash_hit_color;
+
+		
+		public:
+		bool stop_attack;
+		sf::RectangleShape attack_bar;
+
 		explicit Board();
 
 		sf::FloatRect GetButtonGlobalBounds(const char button_type) const;
 
-		inline sf::FloatRect GetBoardGlobalBounds() const
-		{
+		inline sf::FloatRect GetBoardGlobalBounds() const{
 			return board_rectangle.getGlobalBounds();
 		}
 
-		inline sf::Vector2f GetBoardSize() const
-		{
+		inline sf::Vector2f GetBoardSize() const{
 			return board_rectangle.getSize();
 		}
 
-		inline void SetBoardSize(const sf::Vector2f &new_size)
-		{
+		inline void SetBoardSize(const sf::Vector2f &new_size){
 			board_rectangle.setSize(new_size);
 			sf::FloatRect bounds = board_rectangle.getLocalBounds();
                         board_rectangle.setOrigin(sf::Vector2f(bounds.width / 2.f, bounds.height / 2.f));    
 		}
 
-		inline void ShowBoardText(const bool toggle)
-		{
+		inline void ShowBoardText(const bool toggle){
 			show_board_text = toggle;
 		}
 
-		inline void ShowBoardOptionsText(const bool toggle)
-		{
+		inline void ShowBoardOptionsText(const bool toggle){
 			show_board_options_text = toggle;
 		}
 
-		inline bool IsBoardTextShown() const
-		{
+		inline void ShowFightEye(const bool toggle){
+			show_fight_eye = toggle;
+		}
+
+		inline bool IsBoardTextShown() const{
 			return show_board_text;
 		}
 
-		inline void SetBoardOptionsText(const std::string &text)
-		{
+		inline void SetBoardOptionsText(const std::string &text){
 			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 			std::wstring wide_text = converter.from_bytes(text);
 			board_options_text.setString(wide_text);
 		}
 
-		inline void SetBoardWidth(const float width)
-		{
+		inline void SetBoardWidth(const float width){
 			board_width = width;
 		}
 
-		inline float GetBoardWidth() const
-		{
+		inline float GetBoardWidth() const{
 			return board_width;
+		}
+
+
+		inline float GetAttackBarX(){
+			return attack_bar_x;
 		}
 
 		void SetBoardText(const std::string &text, const DWORD delay = 0);

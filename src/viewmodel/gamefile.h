@@ -1,6 +1,7 @@
 #pragma once
 
 #include "file_manager.h"
+#include "player/player.h"
 
 class GameFile{
 private:

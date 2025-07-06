@@ -2,12 +2,18 @@
 
 // #include <iostream>
 
-Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_tick(0)
+// #include <iostream>
+
+Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_tick(0), enemy_health(250)
 {
 	FileManager::LoadFromFile(this->player_texture, "bin/sprites/fei.png");
 	FileManager::LoadFromFile(this->player_dead_texture, "bin/sprites/heart-broken.png");
 	FileManager::LoadFromFile(this->health_texture, "bin/sprites/health_bar.png");
 	FileManager::LoadFromFile(this->health_texture_cover, "bin/sprites/health_bar_cover.png");
+
+	FileManager::LoadFromFile(this->enemy_health_texture, "bin/sprites/health_bar_cover.png");
+	FileManager::LoadFromFile(this->enemy_health_texture_cover, "bin/sprites/health_bar.png");
+
 	FileManager::LoadFromFile(this->miss_attack_texture, "bin/sprites/miss.png");
 	FileManager::LoadFromFile(this->attack_texture[0], "bin/sprites/slice_1.png");
 	FileManager::LoadFromFile(this->attack_texture[1], "bin/sprites/slice_2.png");
@@ -49,6 +55,17 @@ Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_
 		this->health_sprite_cover.setTexture(this->health_texture_cover);
 		this->health_sprite_cover.setPosition(sf::Vector2f(257.f, 399.f));
 		this->health_sprite.setPosition(sf::Vector2f(257.f, 399.f));
+
+		this->enemy_health_sprite.setTexture(this->enemy_health_texture);
+		this->enemy_health_sprite_cover.setTexture(this->enemy_health_texture_cover);
+		this->enemy_health_sprite_cover.setPosition(sf::Vector2f(60.f, 150.f));
+		this->enemy_health_sprite.setPosition(sf::Vector2f(60.f, 150.f));
+		this->enemy_health_text.setFont(this->player_name_font);
+		this->enemy_health_text.setCharacterSize(23);
+		this->enemy_health_text.setFillColor(sf::Color::Red);
+		this->enemy_health_text.setPosition(180.f, 150.f);
+		this->enemy_health_text.setString("250 / 250");
+
 		// this->player_sprite.setColor(sf::Color(255, 0, 0));
 		this->player_sprite.setPosition(sf::Vector2f(316.f, 295.f));
 		this->damage_sound.setBuffer(this->damage_buffer);
@@ -119,14 +136,11 @@ void Player::TakeDamage(const int amount)
 	{
 		this->damage_tick = GetTickCount() + 2000;
 
-		if (this->health - amount < 0)
-		{
+		if (this->health - amount < 0){
 			this->damage_sound.setBuffer(this->death_buffer);
 			this->player_sprite.setTexture(this->player_dead_texture, true);
 			this->health = 0;
-		}
-		else
-		{
+		}else{
 			this->health -= amount;
 		}
 
@@ -153,6 +167,17 @@ void Player::DamagedUpdate(){
 			this->flash_damage_color = false;
 			this->player_sprite.setColor(sf::Color(255, 255, 255));
 		}
+	}
+}
+
+void Player::HitUpdate(){
+	DWORD current_tick = GetTickCount();
+	static DWORD flash_tick = current_tick + 200;
+	if (current_tick > flash_tick)
+	{
+		flash_tick = current_tick + 200;
+		this->TogglePlayerTurn(false);
+		this->board_instance->ShowFightEye(false);
 	}
 }
 
@@ -191,9 +216,12 @@ void Player::HoverButtonUpdate(int direction){
 void Player::PressFight(){
 	const DWORD current_tick = GetTickCount();
 	this->button_pressed = Button_Type::Fight_Button;
-	this->TogglePlayerTurn(false);
 	this->player_attack.play();
-	this->use_button_tick = current_tick + 2000;
+	this->board_instance->ShowFightEye(true);
+	this->board_instance->ShowBoardText(false);
+	this->board_instance->ShowBoardOptionsText(false);
+	this->board_instance->stop_attack=false;
+	this->use_button_tick = current_tick + 200;
 }
 
 void Player::PressAct(){
@@ -219,7 +247,6 @@ void Player::PressItem(){
 
 void Player::PressMercy(){
 	const DWORD current_tick = GetTickCount();
-	const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
 	this->button_pressed = Button_Type::Mercy_Button;
 	this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
 	this->mercy_chosen = Mercy_Type::Mercy;
@@ -343,15 +370,45 @@ void Player::DoMercy(){
 			}
 				this->HoverButton(this->button_hovered);
 				this->use_button_tick = current_tick + 800;
-			}else{
-				this->TogglePlayerTurn(false);
-				this->use_button_tick = current_tick + 1500;
-			}
+		}else{
+			this->TogglePlayerTurn(false);
+			this->use_button_tick = current_tick + 1500;
 		}
 	}
+}
 	
-	
+
 void Player::DoFight(){
+	const DWORD current_tick = GetTickCount();
+	if(this->use_button_tick < current_tick){
+
+		//calculate damage to enemy based on attack bar position and board middle
+		float attack_bar_xpos = board_instance->GetAttackBarX();
+		sf::FloatRect board_bounds = board_instance->GetBoardGlobalBounds();
+		float board_mid = board_bounds.left + board_bounds.width/2;
+		float board_10_len = 0.1*board_bounds.width;
+		float board_25_len = 0.25*board_bounds.width;
+		float board_40_len = 0.4*board_bounds.width;
+		if(attack_bar_xpos >= board_mid - board_10_len && attack_bar_xpos <= board_mid + board_10_len){
+			enemy_health -= 100;
+		}else if(attack_bar_xpos >= board_mid - board_25_len && attack_bar_xpos <= board_mid + board_25_len){
+			enemy_health -= 50;
+		}else if(attack_bar_xpos >= board_mid - board_40_len && attack_bar_xpos <= board_mid + board_40_len){
+			enemy_health -= 25;
+		}else{
+			this->FightMiss();
+		}
+
+		this->enemy_health_sprite_cover.setScale(static_cast<float>(this->health) / 250.f, 1.f);
+		this->enemy_health_text.setString(std::to_string(this->enemy_health) + " / 250");
+
+		this->board_instance->stop_attack = true;
+		this->use_button_tick = current_tick + 2000;
+		this->HitUpdate();
+	}
+}
+
+void Player::FightMiss(){
 	const DWORD current_tick = GetTickCount();
 	if (this->use_button_tick > current_tick)
 	{
@@ -460,6 +517,11 @@ void Player::Update()
 	}
 	this->fire(PROP_ID::SPRITE, this->health_sprite);
 	this->fire(PROP_ID::SPRITE, this->health_sprite_cover);
+
+	this->fire(PROP_ID::SPRITE, this->enemy_health_sprite);
+	this->fire(PROP_ID::SPRITE, this->enemy_health_sprite_cover);
+	this->fire(PROP_ID::TEXT, this->enemy_health_text);
+
 	this->fire(PROP_ID::TEXT, this->player_health_text);
 	this->fire(PROP_ID::TEXT, this->player_name_text);
 }
@@ -565,7 +627,11 @@ void Player::NextStep(int cmd_id) {
 					break;
 			}
 		}else if(this->button_pressed == Button_Type::Fight_Button){
-			this->DoFight();
+			switch(cmd_id){
+				case(CMD_ID::Z):
+				this->DoFight();
+				break;
+			}
 		}else if(this->button_pressed == Button_Type::Act_Button){
 			switch(cmd_id){
 				case(CMD_ID::Z):

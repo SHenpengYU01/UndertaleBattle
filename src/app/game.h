@@ -1,42 +1,37 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "../viewmodel/gamefile.h"
-#include "../viewmodel/board/board.h"
-#include "../viewmodel/player/player.h"
-#include "../viewmodel/enemy/gaster.h"
+#include "../viewmodel/GameViewModel.h"
 #include "../common/property_id.h"
 #include "../view/mainwindow.h"
-
 
 class MainWindow;
 class Player;
 class Gaster;
 class Board;
 class GameFile;
+class GameViewModel;
 
 class Game
 {
 	private:
 		MainWindow window;
-		
-		DWORD turn_tick;
-		int current_turn;
-		GameFile *gamefile;
-		
-		Board *board;
-		Player *player;
-		Gaster *gaster;
+		// sf::RenderWindow window;
+
 		std::vector<std::function<void()>> turn_handlers;
 
 	public:
+		GameViewModel *m_GameViewModel;
 		Game();
-
-		void Update();
+		Game(const Game&) = delete;
+		~Game() noexcept
+		{	
+		}
+		Game& operator=(const Game&) = delete;
 		void HandleWindowEvent();
-		void HandlePlayerDeath();
-		void HandleGameEnd();
-		void InitTurnHandlers();
+        bool initialize();
+		void Update();
+		void Run();
 };
 
 #endif
