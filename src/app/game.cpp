@@ -148,7 +148,6 @@ void Game::InitTurnHandlers(){
             this->gaster->AddBlaster(sf::Vector2f(274.f, 90.f), Blaster_Direction::Direction_Down, 1650, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(530.f, 208.f), Blaster_Direction::Direction_Left, 1650, Blaster_Type::Default_Blaster, 120);
             
-            
         },
 
         [this](){
@@ -189,30 +188,6 @@ void Game::InitTurnHandlers(){
         [this](){
             DWORD current_tick = GetTickCount();
             this->turn_tick = current_tick + 3100;
-            
-            // 向下炮台(7个等距排列)
-            const float downY = 90.f;
-            float downX[7] = {70.f, 130.f, 190.f, 250.f, 310.f, 370.f, 430.f};
-            for (int i = 0; i < 7; i++) {
-                this->gaster->AddBlaster(
-                    sf::Vector2f(downX[i], downY),
-                    Blaster_Direction::Direction_Down,
-                    300 * i
-                );
-            }
-
-            this->gaster->AddBlaster(
-                sf::Vector2f(20.f, 350.f), 
-                Blaster_Direction::Direction_Right,
-                2100
-            );
-            this->gaster->AddBlaster(
-                sf::Vector2f(622.f, 300.f), 
-                Blaster_Direction::Direction_Left,
-                2100
-            );
-            
-            this->current_turn = 9;
 
             // 向下炮台(7个等距排列)
             const float downY = 90.f;
@@ -247,47 +222,6 @@ void Game::InitTurnHandlers(){
             this->turn_tick = current_tick + 10000;
             this->gaster->SetText("尝尝这个 \n\no(*｀ー´)o^", 4500);
 
-            // 13组X坐标(间距30px，覆盖50-410px范围)
-            float xPositions[13] = {50.f, 85.f, 120.f, 155.f, 190.f, 225.f, 260.f, 
-                                295.f, 330.f, 365.f, 400.f, 435.f, 470.f};
-
-            // 第一波：全蓝覆盖(4600ms)
-            for(int i=0; i<13; i++) {
-                this->gaster->AddBlaster(
-                    sf::Vector2f(xPositions[i], 90.f),
-                    Blaster_Direction::Direction_Down,
-                    4600,
-                    Blaster_Type::Blue_Blaster,
-                    500
-                );
-            }
-
-            // 第二波：全橙覆盖(5800ms)
-            for(int i=0; i<13; i++) {
-                this->gaster->AddBlaster(
-                    sf::Vector2f(xPositions[i], 90.f),
-                    Blaster_Direction::Direction_Down,
-                    5800,
-                    Blaster_Type::Orange_Blaster,
-                    500
-                );
-            }
-
-            // 第三波：蓝/默认交替(7000ms)
-            for(int i=0; i<13; i++) {
-                Blaster_Type type = (i % 2 == 0) ? Blaster_Type::Blue_Blaster 
-                                                : Blaster_Type::Default_Blaster;
-                this->gaster->AddBlaster(
-                    sf::Vector2f(xPositions[i], 90.f),
-                    Blaster_Direction::Direction_Down,
-                    7000,
-                    type,
-                    500
-                );
-            }
-        },
-
-        
             // 13组X坐标(间距30px，覆盖50-410px范围)
             float xPositions[13] = {50.f, 85.f, 120.f, 155.f, 190.f, 225.f, 260.f, 
                                 295.f, 330.f, 365.f, 400.f, 435.f, 470.f};
@@ -389,17 +323,19 @@ void Game::InitTurnHandlers(){
 
             this->gaster->AddBlaster(sf::Vector2f(player->GetPlayerPosition().x - 60.f, 90.f), Blaster_Direction::Direction_Down, 0, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(638.f, player->GetPlayerPosition().y - 60.f), Blaster_Direction::Direction_Left, 0, Blaster_Type::Default_Blaster, 120);
+            float xPositions[13] = {50.f, 80.f, 110.f, 140.f, 170.f, 200.f, 230.f, 
+                                    260.f, 290.f, 320.f, 350.f, 380.f, 410.f};
 
-            this->gaster->AddBlaster(sf::Vector2f(70.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(106.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(154.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(199.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(250.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(298.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(337.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(373.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(409.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
-            this->gaster->AddBlaster(sf::Vector2f(442.f, 90.f), Blaster_Direction::Direction_Down, 800, Blaster_Type::Blue_Blaster, 500);
+                // 第一波：全蓝覆盖(4600ms)
+                for(int i=0; i<13; i++) {
+                    this->gaster->AddBlaster(
+                        sf::Vector2f(xPositions[i], 90.f),
+                        Blaster_Direction::Direction_Down,
+                        800,
+                        Blaster_Type::Blue_Blaster,
+                        500
+                    );
+                }
         },
 
         [this](){
