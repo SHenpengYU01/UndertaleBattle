@@ -36,6 +36,7 @@ class Game
 		void HandleWindowEvent();
 		void HandlePlayerDeath();
 		void HandleGameEnd();
+		void HandlePlayerWin();
 		void InitTurnHandlers();
 };
 

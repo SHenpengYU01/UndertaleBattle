@@ -53,7 +53,10 @@ void Game::Update()
 		{
 			this->window.HandleInput();
 			this->board->Update();
-
+            //player won
+            if(this->player->GetEnemyHealth() < 0){
+                HandlePlayerWin();
+            }
 			if (!this->player->IsPlayerInTurn())
 			{
 				if (this->turn_tick < current_tick && this->player->GetButtonUseTick() < current_tick)
@@ -64,7 +67,7 @@ void Game::Update()
 				}
 			}
 			this->gaster->Update();
-		}else{
+		}else{//    player failed
 			if (this->current_turn != last_turn){
 				this->HandlePlayerDeath();
 			}else{
@@ -79,6 +82,10 @@ void Game::Update()
 
 		this->window.display();
 	}
+}
+
+void Game::HandlePlayerWin(){
+
 }
 
 void Game::HandlePlayerDeath(){

@@ -45,6 +45,8 @@ class Board : public PropertyTrigger
 		sf::Sprite mercy_button_sprite;
 		sf::Texture hp_texture;
 		sf::Sprite hp_sprite;
+		sf::Texture fight_eye_texture;
+		sf::Sprite fight_eye_sprite;
 		sf::RectangleShape board_rectangle;
 		sf::Font board_text_font;
 		sf::Text board_text;
@@ -56,13 +58,16 @@ class Board : public PropertyTrigger
 		DWORD board_text_tick;
 		bool show_board_text;
 		bool show_board_options_text;
-		float board_width;
-
-		sf::Texture fight_eye_texture;
-		sf::Sprite fight_eye_sprite;
 		bool show_fight_eye;
+		float board_width;
+		float attack_bar_x;
+		bool flash_hit_color;
 
-	public:
+		
+		public:
+		bool stop_attack;
+		sf::RectangleShape attack_bar;
+
 		explicit Board();
 
 		sf::FloatRect GetButtonGlobalBounds(const char button_type) const;
@@ -109,6 +114,11 @@ class Board : public PropertyTrigger
 
 		inline float GetBoardWidth() const{
 			return board_width;
+		}
+
+
+		inline float GetAttackBarX(){
+			return attack_bar_x;
 		}
 
 		void SetBoardText(const std::string &text, const DWORD delay = 0);
