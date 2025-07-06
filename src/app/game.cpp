@@ -12,10 +12,13 @@ bool Game::initialize(){
 	Board* board = new Board();
 	Player* player = new Player(board);
 	Gaster* gaster = new Gaster(player);
-    this->m_GameViewModel = new GameViewModel(board, player, gamefile, gaster);
+    this->m_GameViewModel = new GameViewModel(*board, *player,*gamefile, *gaster);
     this->m_GameViewModel->InitTurnHandlers();
 
 	this->window.SetNextCommand( this->m_GameViewModel->m_player->GetNextCommand() );
+    for(int i=0; i < PROP_ID::PROP_ID_NUM; i++){
+        this->m_GameViewModel->AddNotification( this->window.GetNotification(i) );
+    }
 	for(int i=0; i < PROP_ID::PROP_ID_NUM; i++){
 		this->m_GameViewModel->m_player->AddNotification( this->window.GetNotification(i) );
 	}
@@ -48,9 +51,9 @@ void Game::HandleWindowEvent(){
     }
 }
 void Game::Run(){
-    constexpr int last_turn = 27;
     while(this->window.isOpen()){
         this->HandleWindowEvent();
+        this->window.clear();
         this->m_GameViewModel->Update();
         this->window.display();
     }

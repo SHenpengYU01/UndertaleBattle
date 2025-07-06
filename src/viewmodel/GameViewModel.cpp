@@ -4,10 +4,10 @@
 #include "GameViewModel.h"
 
 
-GameViewModel::GameViewModel(Board* board, Player* player, GameFile* gamefile, Gaster* gaster):	m_board(board),
-	m_player(player),
-	m_gamefile(gamefile),
-	m_gaster(gaster),
+GameViewModel::GameViewModel(Board& board, Player& player, GameFile& gamefile, Gaster& gaster):	m_board(&board),
+	m_player(&player),
+	m_gamefile(&gamefile),
+	m_gaster(&gaster),
 	current_turn(0),
 	turn_tick(0)
 {
@@ -130,7 +130,7 @@ void GameViewModel::InitTurnHandlers(){
             this->current_turn = 4;
             this->turn_tick = current_tick + 2750;
 
-            this->m_gaster->AddBlaster(sf::Vector2f(256.f, 90.f), Blaster_Direction::Direction_Down, 0, Blaster_Type::Default_Blaster, 1000);
+            this->m_gaster->AddBlaster(sf::Vector2f(256.f, 90.f), Blaster_Direction::Direction_Down, 0, Blaster_Type::Default_Blaster, 100);
             this->m_gaster->AddBlaster(sf::Vector2f(530.f, 235.f), Blaster_Direction::Direction_Left, 0, Blaster_Type::Default_Blaster, 1000);
             this->m_gaster->AddBlaster(sf::Vector2f(181.f, 90.f), Blaster_Direction::Direction_Down, 1200, Blaster_Type::Default_Blaster, 120);
             this->m_gaster->AddBlaster(sf::Vector2f(530.f, 301.f), Blaster_Direction::Direction_Left, 1200, Blaster_Type::Default_Blaster, 120);

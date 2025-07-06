@@ -14,7 +14,7 @@ class GameViewModel : public PropertyTrigger
 {
 public:
 	GameViewModel();
-	GameViewModel(Board* board, Player* player, GameFile* gamefile, Gaster* gaster);
+	GameViewModel(Board& board, Player& player, GameFile& gamefile, Gaster& gaster);
 	GameViewModel(const GameViewModel&) = delete;
 	~GameViewModel() noexcept
 	{

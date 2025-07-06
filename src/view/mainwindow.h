@@ -23,7 +23,6 @@ public:
 
     //notification
 	PropertyNotification GetNotification(int nf_id);
-    void HandleInput();
 
 
 };
