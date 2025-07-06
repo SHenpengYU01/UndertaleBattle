@@ -3,9 +3,9 @@
 #define __GAME_VIEW_MODEL_H__
 
 #include "../common/frame.h"
-#include "board.h"
-#include "player.h"
-#include "gaster.h"
+#include "board/board.h"
+#include "player/player.h"
+#include "enemy/gaster.h"
 #include "gamefile.h"
 #include "../common/property_id.h"
 
@@ -26,7 +26,7 @@ public:
 
 
 //commands
-	std::function<void()> get_next_step_command();
+	std::function<void(int)> get_next_step_command();
 
 //methods
 	void next_step(int turn);

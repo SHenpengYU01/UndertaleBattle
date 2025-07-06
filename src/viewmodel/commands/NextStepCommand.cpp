@@ -1,9 +1,9 @@
 
 #include "../GameViewModel.h"
 
-std::function<void()> GameViewModel::get_next_step_command()
+std::function<void(int)> GameViewModel::get_next_step_command()
 {
-	return [this]()->void
+	return [this](int)->void
 		{
 			this->m_player->GetNextCommand();
 		};

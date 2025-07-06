@@ -1,11 +1,9 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include "../main.h"
-#include "board.h"
-#include "../common/frame.h"
-#include "../common/property_id.h"
-// #include "view/mainwindow.h"
+#include "../board/board.h"
+#include "../../common/frame.h"
+#include "../../common/property_id.h"
 
 
 class Board;
@@ -33,6 +31,7 @@ class Player : public PropertyTrigger
 		sf::Sound player_heal;
 		sf::Sound player_attack;
 		sf::Sound damage_sound;
+
 		int health;
 		DWORD damage_tick;
 		DWORD use_button_tick;
@@ -42,7 +41,9 @@ class Player : public PropertyTrigger
 		char button_pressed;
 		char button_hovered;
 		char heal_items_available;
-
+		
+		char item_chosen;
+		char mercy_chosen;
 
 		Board *board_instance;
 
@@ -90,34 +91,40 @@ class Player : public PropertyTrigger
 		void TakeDamage(const int amount);
 		void DamagedUpdate();
 		void HoverButtonUpdate(int direction);
-
-		void Move(int cmd_id);
-		void PressButton();
-		void PressFight();
-		void PressAct();
-		void PressItem();
-		void PressMercy();
-
-		void DoFight();
-		void DoAct();
-		void DoItem();
-		void DoMercy();
-		void CancelButtonPressed();
 		
 		void Update();
 		void Reset();
-
+		
 		std::function<void(int)> GetNextCommand(){
 			return [this](int cmd_id)->void
 			{
 				this->NextStep(cmd_id);
 			};
 		}
-
+		
 		void NextStep(int cmd_id);
 
-		
+		void Move(int cmd_id);
+	private:
+		void PressButton();
+		void PressFight();
+		void PressAct();
+		void PressItem();
+		void PressMercy();
+		void CancelButtonPressed();
 
+		void DoFight();
+		void DoAct();
+		void DoItem();
+		void DoMercy();
+		
+		void ChooseNextItem();
+		void ChoosePrevItem();
+		void UpdateItemOptions();
+
+		void ChooseNextMercy();
+		void ChoosePrevMercy();
+		void UpdateMercyOptions();
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_tick(0)
 {
-	FileManager::LoadFromFile(this->player_texture, "bin/sprites/heart.png");
+	FileManager::LoadFromFile(this->player_texture, "bin/sprites/fei.png");
 	FileManager::LoadFromFile(this->player_dead_texture, "bin/sprites/heart-broken.png");
 	FileManager::LoadFromFile(this->health_texture, "bin/sprites/health_bar.png");
 	FileManager::LoadFromFile(this->health_texture_cover, "bin/sprites/health_bar_cover.png");
@@ -20,6 +20,9 @@ Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_
 		this->board_instance = board_instance;
 		this->button_hovered = Button_Type::Fight_Button;
 		this->button_pressed = Button_Type::None;
+		this->item_chosen = Item_Type::Hajimi;
+		this->mercy_chosen = Mercy_Type::Mercy;
+
 		this->flash_damage_color = false;
 		this->player_turn = false;
 		this->is_moving = false;
@@ -35,11 +38,14 @@ Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_
 		this->player_health_text.setPosition(377.f, 394.f);
 		this->player_health_text.setString("100 / 100");
 		this->player_sprite.setTexture(this->player_texture);
+
+		this->player_sprite.setScale(sf::Vector2f(0.13f, 0.13f));
+
 		this->health_sprite.setTexture(this->health_texture);
 		this->health_sprite_cover.setTexture(this->health_texture_cover);
 		this->health_sprite_cover.setPosition(sf::Vector2f(257.f, 399.f));
 		this->health_sprite.setPosition(sf::Vector2f(257.f, 399.f));
-		this->player_sprite.setColor(sf::Color(255, 0, 0));
+		// this->player_sprite.setColor(sf::Color(255, 0, 0));
 		this->player_sprite.setPosition(sf::Vector2f(316.f, 295.f));
 		this->damage_sound.setBuffer(this->damage_buffer);
 		this->player_heal.setBuffer(this->player_heal_buffer);
@@ -96,7 +102,7 @@ void Player::TogglePlayerTurn(const bool toggle, const std::string &board_text, 
 	}
 	else
 	{
-		this->board_instance->SetBoardSize(sf::Vector2f(165.f, 165.f));
+		this->board_instance->SetBoardSize(sf::Vector2f(430.f, 165.f));
 		this->player_sprite.setPosition(sf::Vector2f(316.f, 295.f));
 		this->board_instance->HoverButton(Button_Type::None);
 		this->board_instance->ShowBoardText(false);
@@ -141,7 +147,7 @@ void Player::DamagedUpdate(){
 		}else
 		{
 			this->flash_damage_color = false;
-			this->player_sprite.setColor(sf::Color(255, 0, 0));
+			this->player_sprite.setColor(sf::Color(255, 255, 255));
 		}
 	}
 }
@@ -184,7 +190,6 @@ void Player::PressFight(){
 	this->TogglePlayerTurn(false);
 	this->player_attack.play();
 	this->use_button_tick = current_tick + 2000;
-
 }
 
 void Player::PressAct(){
@@ -195,22 +200,29 @@ void Player::PressAct(){
 	this->board_instance->ShowBoardOptionsText(true);
 	this->board_instance->ShowBoardText(false);
 	this->use_button_tick = current_tick + 200;
-
 }
 
 void Player::PressItem(){
 	const DWORD current_tick = GetTickCount();
-	if (this->heal_items_available)
-	{
-		this->button_pressed = Button_Type::Item_Button;
-		this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-		this->board_instance->SetBoardOptionsText("* 蜂蜜特饮");
-		this->board_instance->ShowBoardOptionsText(true);
-		this->board_instance->ShowBoardText(false);
-		this->use_button_tick = current_tick + 200;
-	}
+	this->button_pressed = Button_Type::Item_Button;
+	this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
+	this->board_instance->SetBoardOptionsText("* 蜂蜜特饮\n  沃特尔");
+	this->board_instance->ShowBoardOptionsText(true);
+	this->board_instance->ShowBoardText(false);
+	this->use_button_tick = current_tick + 200;
 }
 
+void Player::PressMercy(){
+	const DWORD current_tick = GetTickCount();
+	const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
+	this->button_pressed = Button_Type::Mercy_Button;
+	this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
+	this->mercy_chosen = Mercy_Type::Mercy;
+	this->board_instance->SetBoardOptionsText("* 原谅\n  溜走");
+	this->board_instance->ShowBoardOptionsText(true);
+	this->board_instance->ShowBoardText(false);
+	this->use_button_tick = current_tick + 200;
+}
 
 void Player::PressButton(){
 	const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
@@ -232,39 +244,6 @@ void Player::PressButton(){
 	}
 }
 
-void Player::PressMercy(){
-	const DWORD current_tick = GetTickCount();
-	const sf::FloatRect player_bounds = this->player_sprite.getGlobalBounds();
-	if (player_bounds.intersects(this->board_instance->GetButtonGlobalBounds(Button_Type::Mercy_Button)))
-	{
-		this->button_pressed = Button_Type::Mercy_Button;
-		this->player_sprite.setPosition(sf::Vector2f(45.f, 233.f));
-		this->board_instance->SetBoardOptionsText("* 溜走");
-		this->board_instance->ShowBoardOptionsText(true);
-		this->board_instance->ShowBoardText(false);
-		this->use_button_tick = current_tick + 200;
-	}
-}
-
-
-void Player::DoAct(){
-	const DWORD current_tick = GetTickCount();
-	if (this->use_button_tick < current_tick){
-		if (!this->board_instance->IsBoardTextShown())
-		{
-			this->board_instance->ShowBoardOptionsText(false);
-			this->board_instance->ShowBoardText(true);
-			this->board_instance->SetBoardText("* 封兽鵺 - 攻击 ??? 防御 ???\n* 一看到别人在兴致勃勃做事，\n她就不由得想在暗地里阻挠别人，\n这就是她的性格.");
-			this->HoverButton(this->button_hovered);
-			this->use_button_tick = current_tick + 800;
-		}
-		else{
-			this->TogglePlayerTurn(false);
-			this->use_button_tick = current_tick + 1500;
-		}
-	}
-}
-
 void Player::CancelButtonPressed(){
 	if (!this->board_instance->IsBoardTextShown())
 	{
@@ -275,6 +254,24 @@ void Player::CancelButtonPressed(){
 	}
 }
 
+void Player::DoAct(){
+	const DWORD current_tick = GetTickCount();
+	if (this->use_button_tick < current_tick){
+		if (!this->board_instance->IsBoardTextShown())
+		{
+			this->board_instance->ShowBoardOptionsText(false);
+			this->board_instance->ShowBoardText(true);
+			this->board_instance->SetBoardText("封兽鵺 - 攻击 ??? 防御 ???\n* 一看到别人在兴致勃勃做事，\n她就不由得想在暗地里阻挠别人，\n这就是她的性格.");
+			this->HoverButton(this->button_hovered);
+			this->use_button_tick = current_tick + 800;
+		}
+		else{
+			this->TogglePlayerTurn(false);
+			this->use_button_tick = current_tick + 1500;
+		}
+	}
+}
+
 
 void Player::DoItem(){
 	const DWORD current_tick = GetTickCount();
@@ -282,18 +279,39 @@ void Player::DoItem(){
 	{
 		if (!this->board_instance->IsBoardTextShown())
 		{
+			switch(this->item_chosen){
+				case(Item_Type::Hajimi):
+				if(this->heal_items_available){
+					this->board_instance->SetBoardText("你喝了蜂蜜特饮\n  满血回归！");
+					this->health = 100;
+					this->player_heal.play();
+					this->player_health_text.setString("100 / 100");
+					this->heal_items_available = 0;
+					this->health_sprite_cover.setScale(1.f, 1.f);
+				}else{
+					this->board_instance->SetBoardText("没有了。。。");
+				}
+				break;
+
+				case(Item_Type::Water):
+				if(this->heal_items_available){
+					this->board_instance->SetBoardText("你喝了口水\n");
+					this->health += 20;
+					if( this->health > 100 ) this->health=100;
+					this->player_heal.play();
+					this->player_health_text.setString(std::to_string(this->health)+" / 100");
+					this->heal_items_available = 0;
+					this->health_sprite_cover.setScale(this->health/100.0, 1.f);
+				}else{
+					this->board_instance->SetBoardText("水喝完了。。。\n");
+				}
+				break;
+			}
 			this->board_instance->ShowBoardOptionsText(false);
 			this->board_instance->ShowBoardText(true);
-			this->board_instance->SetBoardText("* 你喝了蜂蜜特饮\n* 你感觉很好喝。");
-			this->health = 100;
-			this->player_heal.play();
-			this->player_health_text.setString("100 / 100");
-			this->heal_items_available = 0;
-			this->health_sprite_cover.setScale(1.f, 1.f);
 			this->HoverButton(this->button_hovered);
 			this->use_button_tick = current_tick + 800;
-		}
-		else{
+		}else{
 			this->TogglePlayerTurn(false);
 			this->use_button_tick = current_tick + 1500;
 		}	
@@ -301,22 +319,32 @@ void Player::DoItem(){
 }
 
 
-
 void Player::DoMercy(){
 	const DWORD current_tick = GetTickCount();
 	if (this->use_button_tick < current_tick)
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
+		if(!this->board_instance->IsBoardTextShown())
 		{
 			this->board_instance->ShowBoardOptionsText(false);
-			this->TogglePlayerTurn(false);
-			this->use_button_tick = current_tick + 1500;
+			this->board_instance->ShowBoardText(true);
+			switch(this->mercy_chosen){
+				case(Mercy_Type::Mercy):
+				this->board_instance->SetBoardText("“原谅我？我错了吗”\n\nT^T");
+				break;
+				case(Mercy_Type::Flee):
+				this->board_instance->SetBoardText("“休想溜走！\n\n╰_ ╯”");
+				break;
+			}
+				this->HoverButton(this->button_hovered);
+				this->use_button_tick = current_tick + 800;
+			}else{
+				this->TogglePlayerTurn(false);
+				this->use_button_tick = current_tick + 1500;
+			}
 		}
 	}
-}
-
-
-
+	
+	
 void Player::DoFight(){
 	const DWORD current_tick = GetTickCount();
 	if (this->use_button_tick > current_tick)
@@ -341,9 +369,81 @@ void Player::DoFight(){
 	}
 }
 
+void Player::UpdateMercyOptions(){
+		this->board_instance->ShowBoardOptionsText(true);
+		this->board_instance->ShowBoardText(false);
+		switch(this->mercy_chosen){
+			case(Mercy_Type::Mercy):
+			this->board_instance->SetBoardOptionsText("* 原谅\n  溜走");
+			break;
+			case(Mercy_Type::Flee):
+			this->board_instance->SetBoardOptionsText("  原谅\n* 溜走");
+			break;
+		}
+}
+	
+void Player::ChooseNextMercy(){
+	static DWORD mercy_option_tick = 0;
+	const DWORD current_tick = GetTickCount();
+	if(current_tick > mercy_option_tick){
+		this->mercy_chosen ++;
+		this->mercy_chosen %= Mercy_Type::Mercy_Type_Num;
+		this->UpdateMercyOptions();
+		mercy_option_tick = current_tick + 250;
+	}
+}
+
+void Player::ChoosePrevMercy(){
+	static DWORD mercy_option_tick = 0;
+	const DWORD current_tick = GetTickCount();
+	if(current_tick > mercy_option_tick){
+		this->mercy_chosen = (this->mercy_chosen + Mercy_Type::Mercy_Type_Num - 1) % Mercy_Type::Mercy_Type_Num;
+		this->UpdateMercyOptions();
+		mercy_option_tick = current_tick + 250;
+	}
+}
+
+void Player::UpdateItemOptions(){
+	static DWORD item_option_tick = 0;
+	const DWORD current_tick = GetTickCount();
+	if(current_tick > item_option_tick){
+		this->board_instance->ShowBoardOptionsText(true);
+		this->board_instance->ShowBoardText(false);
+		switch(this->item_chosen){
+			case(Item_Type::Hajimi):
+			this->board_instance->SetBoardOptionsText("* 蜂蜜特饮\n  沃特尔");
+			break;
+			case(Item_Type::Water):
+			this->board_instance->SetBoardOptionsText("  蜂蜜特饮\n* 沃特尔");
+			break;
+		}
+		item_option_tick = current_tick + 250;
+	}
+}
+
+void Player::ChooseNextItem(){
+	static DWORD item_option_tick = 0;
+	const DWORD current_tick = GetTickCount();
+	if(current_tick > item_option_tick){
+		this->item_chosen ++;
+		this->item_chosen %= Item_Type::Item_Type_Num;
+		this->UpdateItemOptions();
+		item_option_tick = current_tick + 250;
+	}
+}
+
+void Player::ChoosePrevItem(){
+	static DWORD item_option_tick = 0;
+	const DWORD current_tick = GetTickCount();
+	if(current_tick > item_option_tick){
+		this->item_chosen = (this->item_chosen + Item_Type::Item_Type_Num - 1) % Item_Type::Item_Type_Num;
+		this->UpdateItemOptions();
+		item_option_tick = current_tick + 250;
+	}
+}
+	
 void Player::Update()
 {
-	const DWORD current_tick = GetTickCount();
 	this->is_moving = false;
 	
 	if (this->health > 0){
@@ -439,7 +539,6 @@ void Player::Move(int cmd_id){
 void Player::NextStep(int cmd_id) {
 	if (!this->player_turn) {
 		Move(cmd_id);
-		//Notify();
 		this->fire(PROP_ID::SPRITE, this->player_sprite);
 	}else{
 		if(this->button_pressed == Button_Type::None){
@@ -475,6 +574,12 @@ void Player::NextStep(int cmd_id) {
 				case(CMD_ID::X):
 					this->CancelButtonPressed();
 					break;
+				case(CMD_ID::UP):
+					this->ChoosePrevItem();
+					break;
+				case(CMD_ID::DOWN):
+					this->ChooseNextItem();
+					break;
 			}
 		}else if(this->button_pressed == Button_Type::Mercy_Button){
 			switch(cmd_id){
@@ -483,6 +588,12 @@ void Player::NextStep(int cmd_id) {
 					break;
 				case(CMD_ID::X):
 					this->CancelButtonPressed();
+					break;
+				case(CMD_ID::UP):
+					this->ChoosePrevMercy();
+					break;
+				case(CMD_ID::DOWN):
+					this->ChooseNextMercy();
 					break;
 			}
 		}
