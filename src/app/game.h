@@ -1,7 +1,6 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "../main.h"
 #include "../viewmodel/GameViewModel.h"
 #include "../common/property_id.h"
 #include "../view/mainwindow.h"

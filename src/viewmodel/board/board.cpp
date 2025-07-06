@@ -205,8 +205,4 @@ void Board::Update()
 		}
 		fire(PROP_ID::RECTANGLE_SHAPE, this->attack_bar);
 	}
-<<<<<<< HEAD:src/viewmodel/board/board.cpp
 }
-=======
-}
->>>>>>> yzy:src/viewmodel/board.cpp
