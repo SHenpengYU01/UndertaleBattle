@@ -40,7 +40,9 @@ class Player : public PropertyTrigger
 		bool is_moving;
 		char button_pressed;
 		char button_hovered;
-		char heal_items_available;
+		// char heal_items_available;
+		int heal_items_available_honey;
+		int heal_items_available_water;
 		
 		char item_chosen;
 		char mercy_chosen;

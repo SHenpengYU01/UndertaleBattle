@@ -1,5 +1,7 @@
 #include "player.h"
 
+// #include <iostream>
+
 Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_tick(0)
 {
 	FileManager::LoadFromFile(this->player_texture, "bin/sprites/fei.png");
@@ -26,7 +28,9 @@ Player::Player(Board *board_instance) : health(100), damage_tick(0), use_button_
 		this->flash_damage_color = false;
 		this->player_turn = false;
 		this->is_moving = false;
-		this->heal_items_available = 1;
+		// this->heal_items_available = 1;
+		this->heal_items_available_water = 1; // Number of water items available
+		this->heal_items_available_honey = 1; // Number of honey items available
 		this->player_name_text.setFont(this->player_name_font);
 		this->player_name_text.setCharacterSize(23);
 		this->player_name_text.setFillColor(sf::Color::White);
@@ -209,6 +213,7 @@ void Player::PressItem(){
 	this->board_instance->SetBoardOptionsText("* 蜂蜜特饮\n  沃特尔");
 	this->board_instance->ShowBoardOptionsText(true);
 	this->board_instance->ShowBoardText(false);
+	this->item_chosen = Item_Type::Hajimi; // Reset to first item
 	this->use_button_tick = current_tick + 200;
 }
 
@@ -279,14 +284,15 @@ void Player::DoItem(){
 	{
 		if (!this->board_instance->IsBoardTextShown())
 		{
+			// std::cout << "DOitem:Item chosen: " << static_cast<int>(this->item_chosen) << std::endl;
 			switch(this->item_chosen){
 				case(Item_Type::Hajimi):
-				if(this->heal_items_available){
+				if(this->heal_items_available_honey){
 					this->board_instance->SetBoardText("你喝了蜂蜜特饮\n  满血回归！");
 					this->health = 100;
 					this->player_heal.play();
 					this->player_health_text.setString("100 / 100");
-					this->heal_items_available = 0;
+					this->heal_items_available_honey = 0;
 					this->health_sprite_cover.setScale(1.f, 1.f);
 				}else{
 					this->board_instance->SetBoardText("没有了。。。");
@@ -294,13 +300,13 @@ void Player::DoItem(){
 				break;
 
 				case(Item_Type::Water):
-				if(this->heal_items_available){
+				if(this->heal_items_available_water){
 					this->board_instance->SetBoardText("你喝了口水\n");
 					this->health += 20;
 					if( this->health > 100 ) this->health=100;
 					this->player_heal.play();
 					this->player_health_text.setString(std::to_string(this->health)+" / 100");
-					this->heal_items_available = 0;
+					this->heal_items_available_water = 0;
 					this->health_sprite_cover.setScale(this->health/100.0, 1.f);
 				}else{
 					this->board_instance->SetBoardText("水喝完了。。。\n");
@@ -412,6 +418,7 @@ void Player::UpdateItemOptions(){
 		switch(this->item_chosen){
 			case(Item_Type::Hajimi):
 			this->board_instance->SetBoardOptionsText("* 蜂蜜特饮\n  沃特尔");
+			
 			break;
 			case(Item_Type::Water):
 			this->board_instance->SetBoardOptionsText("  蜂蜜特饮\n* 沃特尔");
@@ -426,7 +433,8 @@ void Player::ChooseNextItem(){
 	const DWORD current_tick = GetTickCount();
 	if(current_tick > item_option_tick){
 		this->item_chosen ++;
-		this->item_chosen %= Item_Type::Item_Type_Num;
+		this->item_chosen = this->item_chosen % Item_Type::Item_Type_Num;
+		// std::cout << "Item chosen: " << static_cast<int>(this->item_chosen) << std::endl;
 		this->UpdateItemOptions();
 		item_option_tick = current_tick + 250;
 	}
@@ -437,6 +445,7 @@ void Player::ChoosePrevItem(){
 	const DWORD current_tick = GetTickCount();
 	if(current_tick > item_option_tick){
 		this->item_chosen = (this->item_chosen + Item_Type::Item_Type_Num - 1) % Item_Type::Item_Type_Num;
+		// std::cout << "Item chosen: " << static_cast<int>(this->item_chosen) << std::endl;
 		this->UpdateItemOptions();
 		item_option_tick = current_tick + 250;
 	}
@@ -605,7 +614,9 @@ void Player::NextStep(int cmd_id) {
 void Player::Reset()
 {
 	this->health = 100;
-	this->heal_items_available = 1;
+	// this->heal_items_available = 1;
+	this->heal_items_available_water = 1; // Reset water items available
+	this->heal_items_available_honey = 1; // Reset honey items available
 	this->player_health_text.setString("100 / 100");
 	this->is_moving = false;
 	this->damage_tick = 0;
