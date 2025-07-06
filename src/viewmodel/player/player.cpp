@@ -147,7 +147,7 @@ void Player::DamagedUpdate(){
 		}else
 		{
 			this->flash_damage_color = false;
-			// this->player_sprite.setColor(sf::Color(255, 0, 0));
+			this->player_sprite.setColor(sf::Color(255, 255, 255));
 		}
 	}
 }

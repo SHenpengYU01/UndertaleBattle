@@ -323,8 +323,8 @@ void Game::InitTurnHandlers(){
 
             this->gaster->AddBlaster(sf::Vector2f(player->GetPlayerPosition().x - 60.f, 90.f), Blaster_Direction::Direction_Down, 0, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(638.f, player->GetPlayerPosition().y - 60.f), Blaster_Direction::Direction_Left, 0, Blaster_Type::Default_Blaster, 120);
-            float xPositions[13] = {50.f, 80.f, 110.f, 140.f, 170.f, 200.f, 230.f, 
-                                    260.f, 290.f, 320.f, 350.f, 380.f, 410.f};
+            float xPositions[13] = {50.f, 85.f, 120.f, 155.f, 190.f, 225.f, 260.f, 
+                                295.f, 330.f, 365.f, 400.f, 435.f, 470.f};
 
                 // 第一波：全蓝覆盖(4600ms)
                 for(int i=0; i<13; i++) {
