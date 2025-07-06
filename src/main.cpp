@@ -19,7 +19,7 @@ int main()
 	}
 	else
 	{
-		game.Update();
+		game.Run();
 	}
 	return 0;
 }

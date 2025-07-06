@@ -2,19 +2,16 @@
 #define _GAME_H_
 
 #include "../main.h"
-#include "../viewmodel/gamefile.h"
-#include "../viewmodel/board.h"
-#include "../viewmodel/player.h"
-#include "../viewmodel/gaster.h"
+#include "../viewmodel/GameViewModel.h"
 #include "../common/property_id.h"
 #include "../view/mainwindow.h"
-
 
 class MainWindow;
 class Player;
 class Gaster;
 class Board;
 class GameFile;
+class GameViewModel;
 
 class Game
 {
@@ -22,24 +19,20 @@ class Game
 		MainWindow window;
 		// sf::RenderWindow window;
 
-
-		DWORD turn_tick;
-		int current_turn;
-		GameFile *gamefile;
-		
-		Board *board;
-		Player *player;
-		Gaster *gaster;
 		std::vector<std::function<void()>> turn_handlers;
 
 	public:
+		GameViewModel *m_GameViewModel;
 		Game();
-
-		void Update();
+		Game(const Game&) = delete;
+		~Game() noexcept
+		{	
+		}
+		Game& operator=(const Game&) = delete;
 		void HandleWindowEvent();
-		void HandlePlayerDeath();
-		void HandleGameEnd();
-		void InitTurnHandlers();
+        bool initialize();
+		void Update();
+		void Run();
 };
 
 #endif

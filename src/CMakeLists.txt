@@ -22,6 +22,8 @@ set(SOURCES
     app/game.cpp
     common/frame.cpp
     main.cpp
+    viewmodel/GameViewModel.cpp
+    viewmodel/commands/NextStepCommand.cpp
     viewmodel/file_manager.cpp
     viewmodel/player.cpp
     viewmodel/gaster.cpp

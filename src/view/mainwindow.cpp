@@ -40,29 +40,97 @@ PropertyNotification MainWindow::GetNotification(int nf_id){
                     std::cerr << "Bad cast sf::Text " << std::endl;
                 }
             };
+        // case CMD_ID::NONE:
+        //     return [this](const std::any& any)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::NONE);
+        //         } catch(...) {
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //         // Do nothing
+        //     };
+        // case CMD_ID::LEFT:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::LEFT);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::RIGHT:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::RIGHT);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::UP:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::UP);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::DOWN:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::DOWN);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::LEFTUP:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::LEFTUP);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::RIGHTUP:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::RIGHTUP);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };                    
+        // case CMD_ID::LEFTDOWN:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::LEFTDOWN);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::RIGHTDOWN:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::RIGHTDOWN);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::X:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::X);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };
+        // case CMD_ID::Z:
+        //     return [this](const std::any& any_rect)->void{
+        //         try {
+        //             this->m_next_command(CMD_ID::Z);
+        //         } catch(...){
+        //             std::cerr << "Bad cast sf::Text " << std::endl;
+        //         }
+        //     };                
     }
 }
 
-void MainWindow::HandleInput(){
-    int cmd_id = CMD_ID::NONE;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        cmd_id = CMD_ID::LEFT;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-        cmd_id = CMD_ID::RIGHT;
-    }
-    
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-        cmd_id = (cmd_id == CMD_ID::LEFT)? CMD_ID::LEFTUP:
-                (cmd_id == CMD_ID::RIGHT)? CMD_ID::RIGHTUP:
-                CMD_ID::UP;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-        cmd_id = (cmd_id == CMD_ID::LEFT)? CMD_ID::LEFTDOWN:
-                (cmd_id == CMD_ID::RIGHT)? CMD_ID::RIGHTDOWN:
-                CMD_ID::DOWN;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
-        cmd_id = CMD_ID::Z;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-        cmd_id = CMD_ID::X;
-    }
-    this->m_next_command(cmd_id);
-}
+
+
