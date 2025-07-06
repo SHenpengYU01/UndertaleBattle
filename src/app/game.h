@@ -2,9 +2,9 @@
 #define _GAME_H_
 
 #include "../viewmodel/gamefile.h"
-#include "../viewmodel/board.h"
-#include "../viewmodel/player.h"
-#include "../viewmodel/gaster.h"
+#include "../viewmodel/board/board.h"
+#include "../viewmodel/player/player.h"
+#include "../viewmodel/enemy/gaster.h"
 #include "../common/property_id.h"
 #include "../view/mainwindow.h"
 
@@ -19,9 +19,7 @@ class Game
 {
 	private:
 		MainWindow window;
-		// sf::RenderWindow window;
-
-
+		
 		DWORD turn_tick;
 		int current_turn;
 		GameFile *gamefile;

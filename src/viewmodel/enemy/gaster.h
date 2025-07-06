@@ -1,11 +1,11 @@
 #ifndef _GASTER_H_
 #define _GASTER_H_
 
-#include "file_manager.h"
-#include "player.h"
+#include "../file_manager.h"
+#include "../player/player.h"
 
-#include "../common/frame.h"
-#include "../common/property_id.h"
+#include "../../common/frame.h"
+#include "../../common/property_id.h"
 
 
 class Player;
@@ -62,6 +62,7 @@ class Gaster: public PropertyTrigger
 		};
 
 		std::deque<Blaster> blasters;
+		int health;
 
 		Player *player_instance;
 

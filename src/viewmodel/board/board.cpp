@@ -139,7 +139,6 @@ void Board::Update()
 	this->fire(PROP_ID::SPRITE, this->mercy_button_sprite);
 
 	
-
 	if (this->show_board_text)
 	{
 		if (this->board_text_position != this->board_text_buffer.size() && (current_tick > this->board_text_tick))

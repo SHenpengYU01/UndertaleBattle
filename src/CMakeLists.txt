@@ -23,9 +23,9 @@ set(SOURCES
     common/frame.cpp
     main.cpp
     viewmodel/file_manager.cpp
-    viewmodel/player.cpp
-    viewmodel/gaster.cpp
-    viewmodel/board.cpp
+    viewmodel/player/player.cpp
+    viewmodel/enemy/gaster.cpp
+    viewmodel/board/board.cpp
     viewmodel/gamefile.cpp
 )
 

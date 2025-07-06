@@ -29,11 +29,8 @@ Game::Game() : window(sf::VideoMode(642, 481), "Gaster Fight", sf::Style::Titleb
 
 void Game::HandleWindowEvent(){
 	sf::Event event;
-	
-	while (this->window.pollEvent(event))
-	{
-		if (event.type == sf::Event::Closed)
-		{
+	while (this->window.pollEvent(event)){
+		if (event.type == sf::Event::Closed){
 			this->window.close();
 		}
 	}

@@ -1,6 +1,6 @@
 #include "gaster.h"
 
-Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0)
+Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0), health(100)
 {
 	FileManager::LoadFromFile(this->gaster_texture, "bin/sprites/evil.png");
 	FileManager::LoadFromFile(this->gaster_surprised_texture, "bin/sprites/utsuho.png");

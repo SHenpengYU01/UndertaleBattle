@@ -1,10 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#include "../headers.h"
-#include "file_manager.h"
-#include "../common/frame.h"
-#include "../common/property_id.h"
+#include "../../headers.h"
+#include "../file_manager.h"
+#include "../../common/frame.h"
+#include "../../common/property_id.h"
 
 enum Button_Type
 {
@@ -13,6 +13,19 @@ enum Button_Type
 	Item_Button,
 	Mercy_Button,
 	None
+};
+
+
+enum Item_Type{
+	Hajimi,
+	Water,
+	Item_Type_Num
+};
+
+enum Mercy_Type{
+	Mercy,
+	Flee,
+	Mercy_Type_Num,
 };
 
 class Board : public PropertyTrigger
@@ -33,7 +46,6 @@ class Board : public PropertyTrigger
 		sf::Texture hp_texture;
 		sf::Sprite hp_sprite;
 		sf::RectangleShape board_rectangle;
-		// sf::RenderWindow *window_instance;
 		sf::Font board_text_font;
 		sf::Text board_text;
 		sf::Text board_options_text;
