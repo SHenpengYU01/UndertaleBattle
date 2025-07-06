@@ -330,8 +330,8 @@ void Game::InitTurnHandlers(){
 
             this->gaster->AddBlaster(sf::Vector2f(player->GetPlayerPosition().x - 60.f, 90.f), Blaster_Direction::Direction_Down, 0, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(638.f, player->GetPlayerPosition().y - 60.f), Blaster_Direction::Direction_Left, 0, Blaster_Type::Default_Blaster, 120);
-            float xPositions[13] = {50.f, 80.f, 110.f, 140.f, 170.f, 200.f, 230.f, 
-                                    260.f, 290.f, 320.f, 350.f, 380.f, 410.f};
+            float xPositions[13] = {50.f, 85.f, 120.f, 155.f, 190.f, 225.f, 260.f, 
+                                295.f, 330.f, 365.f, 400.f, 435.f, 470.f};
 
                 // 第一波：全蓝覆盖(4600ms)
                 for(int i=0; i<13; i++) {
@@ -403,21 +403,21 @@ void Game::InitTurnHandlers(){
             this->turn_tick = current_tick + 3200;
             this->current_turn = 24;
             this->gaster->AddBlaster(sf::Vector2f(181.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 301.f), Blaster_Direction::Direction_Left, 200, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 301.f), Blaster_Direction::Direction_Left, 200, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(211.f, 90.f), Blaster_Direction::Direction_Down, 350, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 271.f), Blaster_Direction::Direction_Left, 350, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 271.f), Blaster_Direction::Direction_Left, 350, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(241.f, 90.f), Blaster_Direction::Direction_Down, 500, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 241.f), Blaster_Direction::Direction_Left, 500, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 241.f), Blaster_Direction::Direction_Left, 500, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(274.f, 90.f), Blaster_Direction::Direction_Down, 650, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 208.f), Blaster_Direction::Direction_Left, 650, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 208.f), Blaster_Direction::Direction_Left, 650, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(325.f, 90.f), Blaster_Direction::Direction_Down, 1000, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 157.f), Blaster_Direction::Direction_Left, 1000, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 157.f), Blaster_Direction::Direction_Left, 1000, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(298.f, 90.f), Blaster_Direction::Direction_Down, 1150, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 187.f), Blaster_Direction::Direction_Left, 1150, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 187.f), Blaster_Direction::Direction_Left, 1150, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(265.f, 90.f), Blaster_Direction::Direction_Down, 1300, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 223.f), Blaster_Direction::Direction_Left, 1300, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 223.f), Blaster_Direction::Direction_Left, 1300, Blaster_Type::Default_Blaster, 120);
             this->gaster->AddBlaster(sf::Vector2f(238.f, 90.f), Blaster_Direction::Direction_Down, 1550, Blaster_Type::Default_Blaster, 120);
-            this->gaster->AddBlaster(sf::Vector2f(530.f, 253.f), Blaster_Direction::Direction_Left, 1550, Blaster_Type::Default_Blaster, 120);
+            this->gaster->AddBlaster(sf::Vector2f(638.f, 253.f), Blaster_Direction::Direction_Left, 1550, Blaster_Type::Default_Blaster, 120);
         },
 
         [this](){
