@@ -40,97 +40,20 @@ PropertyNotification MainWindow::GetNotification(int nf_id){
                     std::cerr << "Bad cast sf::Text " << std::endl;
                 }
             };
-        }
-        // switch(cmd_id){
-        // case CMD_ID::NONE:
-        //     return [this](const std::any& any)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::NONE);
-        //         } catch(...) {
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //         // Do nothing
-        //     };
-        // case CMD_ID::LEFT:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::LEFT);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::RIGHT:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::RIGHT);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::UP:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::UP);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::DOWN:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::DOWN);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::LEFTUP:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::LEFTUP);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::RIGHTUP:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::RIGHTUP);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };                    
-        // case CMD_ID::LEFTDOWN:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::LEFTDOWN);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::RIGHTDOWN:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::RIGHTDOWN);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::X:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::X);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };
-        // case CMD_ID::Z:
-        //     return [this](const std::any& any_rect)->void{
-        //         try {
-        //             this->m_next_command(CMD_ID::Z);
-        //         } catch(...){
-        //             std::cerr << "Bad cast sf::Text " << std::endl;
-        //         }
-        //     };                
+        case PROP_ID::CMD:
+            return [this](const std::any& any_cmd)->void{
+                try {
+                    int cmd_id = std::any_cast<int>(any_cmd);
+                    if (this->m_next_command) {
+                        this->m_next_command(cmd_id);
+                    } else {
+                        std::cerr << "No command handler set." << std::endl;
+                    }
+                } catch (...) {
+                    std::cerr << "Bad cast int for command ID" << std::endl;
+                }
+            };
+        }       
 }
 
 

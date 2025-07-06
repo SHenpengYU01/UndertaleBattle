@@ -35,7 +35,7 @@ void GameViewModel::HandleInput(){
     }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
         cmd_id = CMD_ID::X;
     }
-    this->fire(cmd_id,std::any());
+    this->fire(PROP_ID::CMD,cmd_id);
 }
 
 void GameViewModel::Update()
