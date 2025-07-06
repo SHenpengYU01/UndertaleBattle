@@ -14,6 +14,8 @@ Board::Board() : board_width(165.f), board_text_position(0), board_text_tick(0)
 	FileManager::LoadFromFile(this->board_text_font, "bin/fonts/fusion-pixel-10px-monospaced-zh_hans.ttf");
 	FileManager::LoadFromFile(this->text_update_sound_buffer, "bin/audio/border_text.wav");
 
+	FileManager::LoadFromFile(this->fight_eye_texture, "bin/sprites/fight_eye.png");
+
 	if (!FileManager::IsAnyFileMissing())
 	{
 		this->hp_sprite.setTexture(this->hp_texture);
@@ -43,6 +45,11 @@ Board::Board() : board_width(165.f), board_text_position(0), board_text_tick(0)
 		this->show_board_text = false;
 		this->show_board_options_text = false;
 		this->text_update_sound.setBuffer(this->text_update_sound_buffer);
+
+		this->show_fight_eye = false;
+		this->fight_eye_sprite.setTexture(this->fight_eye_texture);
+		this->fight_eye_sprite.setScale(sf::Vector2f(1.25f, 1.25f));
+		this->fight_eye_sprite.setPosition(0.f, 200.f);
 	}
 }
 
@@ -139,8 +146,7 @@ void Board::Update()
 	this->fire(PROP_ID::SPRITE, this->mercy_button_sprite);
 
 	
-	if (this->show_board_text)
-	{
+	if (this->show_board_text){
 		if (this->board_text_position != this->board_text_buffer.size() && (current_tick > this->board_text_tick))
 		{
 			this->board_text_tick = current_tick + 50;
@@ -151,8 +157,10 @@ void Board::Update()
 		this->fire(PROP_ID::TEXT, this->board_text);
 	}
 
-	if (this->show_board_options_text)
-	{
+	if (this->show_board_options_text){
 		this->fire(PROP_ID::TEXT, this->board_options_text);
+	}
+	if(this->show_fight_eye){
+		fire(PROP_ID::SPRITE, this->fight_eye_sprite);
 	}
 }

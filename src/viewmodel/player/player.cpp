@@ -147,7 +147,7 @@ void Player::DamagedUpdate(){
 		}else
 		{
 			this->flash_damage_color = false;
-			// this->player_sprite.setColor(sf::Color(255, 0, 0));
+			this->player_sprite.setColor(sf::Color(255, 255, 255));
 		}
 	}
 }
@@ -187,8 +187,11 @@ void Player::HoverButtonUpdate(int direction){
 void Player::PressFight(){
 	const DWORD current_tick = GetTickCount();
 	this->button_pressed = Button_Type::Fight_Button;
-	this->TogglePlayerTurn(false);
+	// this->TogglePlayerTurn(false);
 	this->player_attack.play();
+	this->board_instance->ShowFightEye(false);
+	this->board_instance->ShowBoardText(false);
+	this->board_instance->ShowBoardOptionsText(false);
 	this->use_button_tick = current_tick + 2000;
 }
 

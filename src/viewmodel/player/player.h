@@ -32,6 +32,7 @@ class Player : public PropertyTrigger
 		sf::Sound player_attack;
 		sf::Sound damage_sound;
 
+
 		int health;
 		DWORD damage_tick;
 		DWORD use_button_tick;
