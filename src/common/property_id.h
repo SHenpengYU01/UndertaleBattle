@@ -4,6 +4,7 @@ enum PROP_ID{
     SPRITE,
     TEXT,
     RECTANGLE_SHAPE,
+    CMD,
     PROP_ID_NUM
 };
 
