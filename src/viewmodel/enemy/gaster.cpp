@@ -1,9 +1,5 @@
 #include "gaster.h"
 
-// #include "../viewmodel/file_manager.h"
-// #include "player.h"
-// #include <iostream>
-
 Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0)
 {
 	FileManager::LoadFromFile(this->gaster_texture, "bin/sprites/evil.png");

@@ -40,10 +40,10 @@ class Player : public PropertyTrigger
 		bool is_moving;
 		char button_pressed;
 		char button_hovered;
+		char heal_items_available;
+		
 		char item_chosen;
 		char mercy_chosen;
-		char heal_items_available;
-
 
 		Board *board_instance;
 
@@ -104,8 +104,8 @@ class Player : public PropertyTrigger
 		
 		void NextStep(int cmd_id);
 
-	private:
 		void Move(int cmd_id);
+	private:
 		void PressButton();
 		void PressFight();
 		void PressAct();
