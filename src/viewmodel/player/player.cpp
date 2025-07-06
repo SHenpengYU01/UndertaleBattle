@@ -99,7 +99,7 @@ void Player::TogglePlayerTurn(const bool toggle, const std::string &board_text, 
 	}
 	else
 	{
-		this->board_instance->SetBoardSize(sf::Vector2f(400.f, 165.f));
+		this->board_instance->SetBoardSize(sf::Vector2f(430.f, 165.f));
 		this->player_sprite.setPosition(sf::Vector2f(316.f, 295.f));
 		this->board_instance->HoverButton(Button_Type::None);
 		this->board_instance->ShowBoardText(false);
