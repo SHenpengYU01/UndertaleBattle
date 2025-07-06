@@ -32,7 +32,15 @@ class Player : public PropertyTrigger
 		sf::Sound player_attack;
 		sf::Sound damage_sound;
 
+		sf::Texture enemy_health_texture;
+		sf::Texture enemy_health_texture_cover;
+		sf::Sprite enemy_health_sprite;
+		sf::Sprite enemy_health_sprite_cover;
+		sf::Text enemy_health_text;
+
+
 		int health;
+		int enemy_health;
 		DWORD damage_tick;
 		DWORD use_button_tick;
 		bool flash_damage_color;
@@ -87,9 +95,14 @@ class Player : public PropertyTrigger
 			return is_moving;
 		}
 
+		inline int GetEnemyHealth(){
+			return enemy_health;
+		}
+
 		void TogglePlayerTurn(const bool toggle, const std::string &board_text = "None", const DWORD board_text_delay = 0);
 		void TakeDamage(const int amount);
 		void DamagedUpdate();
+		void HitUpdate();
 		void HoverButtonUpdate(int direction);
 		
 		void Update();
@@ -105,6 +118,8 @@ class Player : public PropertyTrigger
 		void NextStep(int cmd_id);
 
 		void Move(int cmd_id);
+
+		void FightMiss();
 	private:
 		void PressButton();
 		void PressFight();

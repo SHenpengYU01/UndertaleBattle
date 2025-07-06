@@ -30,6 +30,16 @@ Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_d
 		this->dialog.setFillColor(sf::Color::Black);
 		this->dialog.setPosition(70.f, 30.f);
 	}
+	// // 在Gaster构造函数中添加调试输出：
+	// FileManager::LoadFromFile(this->blaster_texture[0], "bin/sprites/blaster_default.png");
+	// sf::Vector2u size = this->blaster_texture[0].getSize();
+	// std::cout << "Blaster尺寸: " << size.x << "x" << size.y << "像素" << std::endl;
+
+	// // 对于激光纹理：
+	// FileManager::LoadFromFile(this->blaster_laser_texture[0], "bin/sprites/blaster_default_laser.png");
+	// size = this->blaster_laser_texture[0].getSize(); 
+	// std::cout << "激光尺寸: " << size.x << "x" << size.y << "像素" << std::endl;
+
 }
 
 void Gaster::SetText(const std::string &text, const DWORD text_duration)
