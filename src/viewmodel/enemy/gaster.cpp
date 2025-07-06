@@ -1,6 +1,6 @@
 #include "gaster.h"
 
-Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0), health(100)
+Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_duration_tick(0)
 {
 	FileManager::LoadFromFile(this->gaster_texture, "bin/sprites/evil.png");
 	FileManager::LoadFromFile(this->gaster_surprised_texture, "bin/sprites/utsuho.png");
@@ -30,6 +30,16 @@ Gaster::Gaster(Player *player_instance) : text_position(0), text_tick(0), text_d
 		this->dialog.setFillColor(sf::Color::Black);
 		this->dialog.setPosition(70.f, 30.f);
 	}
+	// // 在Gaster构造函数中添加调试输出：
+	// FileManager::LoadFromFile(this->blaster_texture[0], "bin/sprites/blaster_default.png");
+	// sf::Vector2u size = this->blaster_texture[0].getSize();
+	// std::cout << "Blaster尺寸: " << size.x << "x" << size.y << "像素" << std::endl;
+
+	// // 对于激光纹理：
+	// FileManager::LoadFromFile(this->blaster_laser_texture[0], "bin/sprites/blaster_default_laser.png");
+	// size = this->blaster_laser_texture[0].getSize(); 
+	// std::cout << "激光尺寸: " << size.x << "x" << size.y << "像素" << std::endl;
+
 }
 
 void Gaster::SetText(const std::string &text, const DWORD text_duration)
@@ -211,7 +221,7 @@ void Gaster::AddBlaster(const sf::Vector2f &position, const char blaster_directi
 {
 	Blaster blaster;
 	blaster.spawn_interval = GetTickCount() + spawn_interval;
-	blaster.blaster_sprite.setPosition(position);
+
 	blaster.state_firing = false;
 	blaster.switch_blaster_sprite = false;
 	blaster.switch_blaster_sprite_tick = 0;
@@ -227,18 +237,21 @@ void Gaster::AddBlaster(const sf::Vector2f &position, const char blaster_directi
 		{
 			blaster.blaster_sprite.setTexture(this->blaster_texture[0]);
 			blaster.laser_sprite.setTexture(this->blaster_laser_texture[0]);
+			blaster.laser_sprite.setScale(0.7f, 0.7f); // 宽度缩小到70%
 			break;
 		}
 		case Blaster_Type::Blue_Blaster:
 		{
 			blaster.blaster_sprite.setTexture(this->blaster_texture[1]);
 			blaster.laser_sprite.setTexture(this->blaster_laser_texture[1]);
+			blaster.laser_sprite.setScale(0.7f, 0.7f); // 宽度缩小到70%
 			break;
 		}
 		case Blaster_Type::Orange_Blaster:
 		{
 			blaster.blaster_sprite.setTexture(this->blaster_texture[2]);
 			blaster.laser_sprite.setTexture(this->blaster_laser_texture[2]);
+			blaster.laser_sprite.setScale(0.7f, 0.7f); // 宽度缩小到70%
 			break;
 		}
 	}
@@ -247,20 +260,23 @@ void Gaster::AddBlaster(const sf::Vector2f &position, const char blaster_directi
 	{
 		case Blaster_Direction::Direction_Down:
 		{
-			blaster.laser_sprite.setPosition(sf::Vector2f(position.x + 34.f, position.y - 11.f));
+			blaster.laser_sprite.setPosition(sf::Vector2f(position.x + 43.5f, position.y - 4.f));
+			blaster.blaster_sprite.setPosition(sf::Vector2f(position.x + 43.5f, position.y - 4.f));
 			blaster.blaster_sprite.setRotation(-90);
 			break;
 		}
 		case Blaster_Direction::Direction_Left:
 		{
-			blaster.laser_sprite.setPosition(sf::Vector2f(position.x + 11.f, position.y + 34.f));
+			blaster.laser_sprite.setPosition(sf::Vector2f(position.x + 14.f, position.y + 38.f));
+			blaster.blaster_sprite.setPosition(sf::Vector2f(position.x + 14.f, position.y + 38.f));
 			blaster.blaster_sprite.setRotation(0);
 			blaster.laser_sprite.setRotation(90);
 			break;
 		}
 		case Blaster_Direction::Direction_Right:
 		{
-			blaster.laser_sprite.setPosition(sf::Vector2f(position.x - 11.f, position.y - 34.f));
+			blaster.laser_sprite.setPosition(sf::Vector2f(position.x - 14.f, position.y - 38.f));
+			blaster.blaster_sprite.setPosition(sf::Vector2f(position.x - 14.f, position.y - 38.f));
 			blaster.blaster_sprite.setRotation(0);
 			blaster.laser_sprite.setRotation(270);
 			break;
