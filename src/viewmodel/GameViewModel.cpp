@@ -14,29 +14,7 @@ GameViewModel::GameViewModel(Board& board, Player& player, GameFile& gamefile, G
 
 }
 
-void GameViewModel::HandleInput(){
-    int cmd_id = CMD_ID::NONE;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        cmd_id = CMD_ID::LEFT;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-        cmd_id = CMD_ID::RIGHT;
-    }
-    
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-        cmd_id = (cmd_id == CMD_ID::LEFT)? CMD_ID::LEFTUP:
-                (cmd_id == CMD_ID::RIGHT)? CMD_ID::RIGHTUP:
-                CMD_ID::UP;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-        cmd_id = (cmd_id == CMD_ID::LEFT)? CMD_ID::LEFTDOWN:
-                (cmd_id == CMD_ID::RIGHT)? CMD_ID::RIGHTDOWN:
-                CMD_ID::DOWN;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Z)){
-        cmd_id = CMD_ID::Z;
-    }else if(sf::Keyboard::isKeyPressed(sf::Keyboard::X)){
-        cmd_id = CMD_ID::X;
-    }
-    this->fire(PROP_ID::CMD,cmd_id);
-}
+
 
 void GameViewModel::Update()
 {
@@ -46,7 +24,7 @@ void GameViewModel::Update()
         this->HandleGameEnd();
     }else if (this->m_player->GetPlayerHealth() > 0 && this->current_turn != last_turn) // If current_turn equals last_turn, the game finishes.
 	{  
-        this->HandleInput();
+        // this->HandleInput();
         this->m_board->Update();
         if (!this->m_player->IsPlayerInTurn())
         {

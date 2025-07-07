@@ -36,8 +36,6 @@ public:
 
 	void InitTurnHandlers();
     
-	void HandleInput();
-
 	void Update();
 
 	Board* m_board;

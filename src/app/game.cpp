@@ -54,6 +54,7 @@ void Game::Run(){
     while(this->window.isOpen()){
         this->HandleWindowEvent();
         this->window.clear();
+        this->window.HandleInput();
         this->m_GameViewModel->Update();
         this->window.display();
     }
