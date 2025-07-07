@@ -120,6 +120,10 @@ class Board : public PropertyTrigger
 			return attack_bar_x;
 		}
 
+		inline void ResetAttackBar(){
+			attack_bar_x = 0;
+		}
+
 		void SetBoardText(const std::string &text, const DWORD delay = 0);
 		void HoverButton(const char button_type);
 		void Update();

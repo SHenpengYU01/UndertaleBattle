@@ -42,21 +42,23 @@ void GameViewModel::Update()
 {
 	const DWORD current_tick = GetTickCount();
 
-	if (this->m_player->GetPlayerHealth() > 0 && this->current_turn != last_turn) // If current_turn equals last_turn, the game finishes.
-	{
-		this->HandleInput();
-		this->m_board->Update();
-
-		if (!this->m_player->IsPlayerInTurn())
-		{
-			if (this->turn_tick < current_tick && this->m_player->GetButtonUseTick() < current_tick)
-			{
-				if( this->current_turn < this->turn_handlers.size() ){
-					this->turn_handlers[current_turn]();
-				}
-			}
-		}
-		this->m_gaster->Update();
+    if(this->m_player->GetEnemyHealth() <= 0){
+        this->HandleGameEnd();
+    }else if (this->m_player->GetPlayerHealth() > 0 && this->current_turn != last_turn) // If current_turn equals last_turn, the game finishes.
+	{  
+        this->HandleInput();
+        this->m_board->Update();
+        if (!this->m_player->IsPlayerInTurn())
+        {
+            if (this->turn_tick < current_tick && this->m_player->GetButtonUseTick() < current_tick)
+            {
+                if( this->current_turn < this->turn_handlers.size() ){
+                    this->turn_handlers[current_turn]();
+                }
+            }
+        }
+        this->m_gaster->Update();
+        
 	}else{
 		if (this->current_turn != last_turn){
 			this->HandlePlayerDeath();
@@ -65,7 +67,7 @@ void GameViewModel::Update()
 		}
 	}
 
-	if (this->current_turn != last_turn) // Player updates should stop on the last turn (in this case, the game finished).
+	if (this->current_turn != last_turn && this->m_player->GetEnemyHealth() > 0) // Player updates should stop on the last turn (in this case, the game finished).
 	{
 		this->m_player->Update();
 	}
@@ -97,6 +99,7 @@ void GameViewModel::HandleGameEnd(){
 	{
 		this->m_gamefile->PlayMusic();
 		this->m_gaster->Reset();
+        // this->m_board->Reset();
 	}
 	this->fire(PROP_ID::TEXT, this->m_gamefile->GetCreditsText() );
 }
@@ -420,12 +423,12 @@ void GameViewModel::InitTurnHandlers(){
             this->current_turn = 26;
             this->m_gaster->ToggleGasterSurprised(true);
             this->m_gaster->SetText("你赢了\n\no(╥﹏╥)o", 5100);
-            this->m_gaster->AddBlaster(sf::Vector2f(181.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
-            this->m_gaster->AddBlaster(sf::Vector2f(217.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
-            this->m_gaster->AddBlaster(sf::Vector2f(250.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
-            this->m_gaster->AddBlaster(sf::Vector2f(271.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
-            this->m_gaster->AddBlaster(sf::Vector2f(301.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
-            this->m_gaster->AddBlaster(sf::Vector2f(325.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
+            // this->m_gaster->AddBlaster(sf::Vector2f(181.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
+            // this->m_gaster->AddBlaster(sf::Vector2f(217.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
+            // this->m_gaster->AddBlaster(sf::Vector2f(250.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
+            // this->m_gaster->AddBlaster(sf::Vector2f(271.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
+            // this->m_gaster->AddBlaster(sf::Vector2f(301.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
+            // this->m_gaster->AddBlaster(sf::Vector2f(325.f, 90.f), Blaster_Direction::Direction_Down, 200, Blaster_Type::Default_Blaster, 120, 100000);
         },
 
         [this](){

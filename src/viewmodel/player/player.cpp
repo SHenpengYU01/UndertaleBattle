@@ -178,6 +178,7 @@ void Player::HitUpdate(){
 		flash_tick = current_tick + 200;
 		this->TogglePlayerTurn(false);
 		this->board_instance->ShowFightEye(false);
+		this->board_instance->ResetAttackBar();
 	}
 }
 
@@ -383,26 +384,28 @@ void Player::DoFight(){
 	if(this->use_button_tick < current_tick){
 
 		//calculate damage to enemy based on attack bar position and board middle
-		float attack_bar_xpos = board_instance->GetAttackBarX();
-		sf::FloatRect board_bounds = board_instance->GetBoardGlobalBounds();
-		float board_mid = board_bounds.left + board_bounds.width/2;
-		float board_10_len = 0.1*board_bounds.width;
-		float board_25_len = 0.25*board_bounds.width;
-		float board_40_len = 0.4*board_bounds.width;
-		if(attack_bar_xpos >= board_mid - board_10_len && attack_bar_xpos <= board_mid + board_10_len){
-			enemy_health -= 100;
-		}else if(attack_bar_xpos >= board_mid - board_25_len && attack_bar_xpos <= board_mid + board_25_len){
-			enemy_health -= 50;
-		}else if(attack_bar_xpos >= board_mid - board_40_len && attack_bar_xpos <= board_mid + board_40_len){
-			enemy_health -= 25;
-		}else{
-			this->FightMiss();
+		if( !board_instance->stop_attack ){
+			float attack_bar_xpos = board_instance->GetAttackBarX();
+			sf::FloatRect board_bounds = board_instance->GetBoardGlobalBounds();
+			float board_mid = board_bounds.left + board_bounds.width/2;
+			float board_10_len = 0.1*board_bounds.width;
+			float board_25_len = 0.25*board_bounds.width;
+			float board_40_len = 0.4*board_bounds.width;
+			if(attack_bar_xpos >= board_mid - board_10_len && attack_bar_xpos <= board_mid + board_10_len){
+				enemy_health -= 100;
+			}else if(attack_bar_xpos >= board_mid - board_25_len && attack_bar_xpos <= board_mid + board_25_len){
+				enemy_health -= 50;
+			}else if(attack_bar_xpos >= board_mid - board_40_len && attack_bar_xpos <= board_mid + board_40_len){
+				enemy_health -= 25;
+			}else{
+				this->FightMiss();
+			}
+	
+			this->enemy_health_sprite_cover.setScale(static_cast<float>(this->health) / 250.f, 1.f);
+			this->enemy_health_text.setString(std::to_string(this->enemy_health) + " / 250");
+	
+			this->board_instance->stop_attack = true;
 		}
-
-		this->enemy_health_sprite_cover.setScale(static_cast<float>(this->health) / 250.f, 1.f);
-		this->enemy_health_text.setString(std::to_string(this->enemy_health) + " / 250");
-
-		this->board_instance->stop_attack = true;
 		this->use_button_tick = current_tick + 2000;
 		this->HitUpdate();
 	}
@@ -514,13 +517,13 @@ void Player::Update()
 	
 	if (this->health > 0){
 		this->DamagedUpdate();
+		this->fire(PROP_ID::SPRITE, this->enemy_health_sprite);
+		this->fire(PROP_ID::SPRITE, this->enemy_health_sprite_cover);
+		this->fire(PROP_ID::TEXT, this->enemy_health_text);
 	}
 	this->fire(PROP_ID::SPRITE, this->health_sprite);
 	this->fire(PROP_ID::SPRITE, this->health_sprite_cover);
 
-	this->fire(PROP_ID::SPRITE, this->enemy_health_sprite);
-	this->fire(PROP_ID::SPRITE, this->enemy_health_sprite_cover);
-	this->fire(PROP_ID::TEXT, this->enemy_health_text);
 
 	this->fire(PROP_ID::TEXT, this->player_health_text);
 	this->fire(PROP_ID::TEXT, this->player_name_text);
@@ -680,7 +683,6 @@ void Player::NextStep(int cmd_id) {
 void Player::Reset()
 {
 	this->health = 100;
-	// this->heal_items_available = 1;
 	this->heal_items_available_water = 1; // Reset water items available
 	this->heal_items_available_honey = 1; // Reset honey items available
 	this->player_health_text.setString("100 / 100");
