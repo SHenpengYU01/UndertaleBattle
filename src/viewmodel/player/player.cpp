@@ -401,7 +401,7 @@ void Player::DoFight(){
 				this->FightMiss();
 			}
 	
-			this->enemy_health_sprite_cover.setScale(static_cast<float>(this->health) / 250.f, 1.f);
+			this->enemy_health_sprite_cover.setScale(static_cast<float>(this->enemy_health) / 250.f, 1.f);
 			this->enemy_health_text.setString(std::to_string(this->enemy_health) + " / 250");
 	
 			this->board_instance->stop_attack = true;
